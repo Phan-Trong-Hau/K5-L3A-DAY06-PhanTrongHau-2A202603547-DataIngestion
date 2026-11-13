@@ -1,0 +1,68 @@
+{
+  "utc": "2026-11-13T11:48:27.879610+00:00",
+  "hashes": {
+    "results/metrics.json": "35cd0229f0d569d3ff69d6775adf5d6e3d4e60cca77debabcacd23cc1091c59c",
+    "results/traces.jsonl": "597d7c1fe07cc6db3203303eca324716b6732485d12fb45c175a7569144dc698",
+    "results/extension/metrics.json": "fc4f74a6c6d2edd7183ca5d3e46cc864b50066defaf75d2649fe5bad10072efb",
+    "results/extension/traces.jsonl": "40a98b1dc16c1eb162ce0beff52dfb158ce93d2914a8b96429652c55ba9d1b23",
+    "results/vietnamese/metrics.json": "b72d29ab879f5dce04e547ee8d4dc0ab9ba2f2f8008d9f7bd28d04279c94a36f",
+    "results/vietnamese/traces.jsonl": "3a7475d3eff0ab8ba71c90c5afd43413238f26175b9bb95ec656958bc6b674b4",
+    "benchmark/questions.json": "9a170ccd91bc49f61acef08dbf7a4d43c12f321bcdb03520e6d533fb293d3fd2",
+    "benchmark/extension_holdout.json": "5a79b695062df4d36e42983a850f759df8f97e558b279391e47bf9e36b63b1ec",
+    "benchmark/vietnamese_questions.json": "92a996a1c0f5750d8bcbb5f1cb25c0201f4585a1a4982c8701acdb881df85c0b",
+    "results/review_acceptance.json": "81570b4d042e540af06626e5db49f15aba9356c713e6e0d0ee648ccc92f34206",
+    "data/multidoc/manifest.json": "c84a309f287201f121df195d65097c3e1371282ca27f7cc2cf4345e719496388",
+    "data/multidoc/pages.json": "1e3023766e717a3ed5df9bd9b8ff2b0481e9f26b35c59f95bf86a7ebe74d3dd4",
+    "benchmark/multidoc_questions.json": "47f4e04321dcf9ebeb0ceffe57b717e283587ddbc12bf4ba04f940ce815a2fa8",
+    "benchmark/multidoc_protocol.json": "afe22abbd062b6c9f8adcea030f2a9337e1f561317fc0d26615d4afc19c56df9",
+    "starter/src/fusion.py": "b3c4aeb5703f43190c992094827e02883385c3293ab78898c91a7f89a240418c",
+    "starter/src/multilingual.py": "1c69f75203a5a08cfceb5c08fc44b2c3300d9db7bd95807a62a2613ea3e2f1f4"
+  },
+  "protocol": {
+    "frozen_before_first_retrieval": true,
+    "sources": 5,
+    "new_source_ids": [
+      "nd69",
+      "nd42",
+      "sherlock"
+    ],
+    "old_sources_used_as_distractors": [
+      "alice",
+      "nd13"
+    ],
+    "new_questions": 45,
+    "split": {
+      "dev": "nd69: 15 questions",
+      "test": "nd42 + sherlock: 30 questions, unseen documents for selection"
+    },
+    "old_diagnostic": "Original 20 Vietnamese questions are scored only after selection/test, labelled diagnostic; never used to tune or select.",
+    "corpus": "data/multidoc/pages.json",
+    "filter": "Only language when explicitly supplied in question/context; no gold source/page filters",
+    "strategies": {
+      "C": "BGE-English dense top3 + supplied filter",
+      "D": "BGE-English dense20 + BM25_20 + RRF60 top20 + English reranker top3",
+      "E": "Same as D candidate retrieval but use RRF top3 directly; no reranker",
+      "F": "Multilingual E5-small ONNX INT8 dense top3 + filter",
+      "G": "E5-small dense20 + same BM25_20/RRF60 top3; no reranker"
+    },
+    "shared_chunking": "All use same paragraph max1000 chunks, physical page/unit and existing chapter boundaries; no chunk tuning.",
+    "selection": "Max dev Hit@3, then dev Hit@1, then lower mean retrieval latency, then strategy name; select among C,D,E,F,G before any test query retrieval.",
+    "claim": "Potential improvements are hypotheses; report all results including regressions. Model changes are explicit E vs G, C vs F; no claim of same model across all five.",
+    "e5": {
+      "model": "intfloat/multilingual-e5-small",
+      "onnx": "Xenova/multilingual-e5-small/onnx/model_quantized.onnx",
+      "dimensions": 384,
+      "pooling": "mean with attention mask",
+      "normalization": "L2",
+      "prefixes": "query: / passage: for every language",
+      "context_tokens": 512
+    },
+    "limitations": [
+      "Source-reviewed questions, not independent human labels.",
+      "One dev document, two test documents; small sample; source/language mix can affect selection.",
+      "PDF OCR spelling retained; historical regulations not current legal advice.",
+      "Strict full-quote single-chunk metric may reject equivalent evidence; recorded exact alternatives accepted.",
+      "Known source text indexed before testing is normal retrieval evaluation; gold/test labels not used for fitting."
+    ]
+  }
+}

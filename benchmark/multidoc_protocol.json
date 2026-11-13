@@ -1,0 +1,47 @@
+{
+  "frozen_before_first_retrieval": true,
+  "sources": 5,
+  "new_source_ids": [
+    "nd69",
+    "nd42",
+    "sherlock"
+  ],
+  "old_sources_used_as_distractors": [
+    "alice",
+    "nd13"
+  ],
+  "new_questions": 45,
+  "split": {
+    "dev": "nd69: 15 questions",
+    "test": "nd42 + sherlock: 30 questions, unseen documents for selection"
+  },
+  "old_diagnostic": "Original 20 Vietnamese questions are scored only after selection/test, labelled diagnostic; never used to tune or select.",
+  "corpus": "starter.src.corpus.load_multidoc_pages",
+  "filter": "Only language when explicitly supplied in question/context; no gold source/page filters",
+  "strategies": {
+    "C": "BGE-English dense top3 + supplied filter",
+    "D": "BGE-English dense20 + BM25_20 + RRF60 top20 + English reranker top3",
+    "E": "Same as D candidate retrieval but use RRF top3 directly; no reranker",
+    "F": "Multilingual E5-small ONNX INT8 dense top3 + filter",
+    "G": "E5-small dense20 + same BM25_20/RRF60 top3; no reranker"
+  },
+  "shared_chunking": "All use same paragraph max1000 chunks, physical page/unit and existing chapter boundaries; no chunk tuning.",
+  "selection": "Max dev Hit@3, then dev Hit@1, then lower mean retrieval latency, then strategy name; select among C,D,E,F,G before any test query retrieval.",
+  "claim": "Potential improvements are hypotheses; report all results including regressions. Model changes are explicit E vs G, C vs F; no claim of same model across all five.",
+  "e5": {
+    "model": "intfloat/multilingual-e5-small",
+    "onnx": "Xenova/multilingual-e5-small/onnx/model_quantized.onnx",
+    "dimensions": 384,
+    "pooling": "mean with attention mask",
+    "normalization": "L2",
+    "prefixes": "query: / passage: for every language",
+    "context_tokens": 512
+  },
+  "limitations": [
+    "Source-reviewed questions, not independent human labels.",
+    "One dev document, two test documents; small sample; source/language mix can affect selection.",
+    "PDF OCR spelling retained; historical regulations not current legal advice.",
+    "Strict full-quote single-chunk metric may reject equivalent evidence; recorded exact alternatives accepted.",
+    "Known source text indexed before testing is normal retrieval evaluation; gold/test labels not used for fitting."
+  ]
+}

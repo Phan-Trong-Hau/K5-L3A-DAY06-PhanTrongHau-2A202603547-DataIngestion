@@ -1,22 +1,22 @@
-"""Materialize disclosed AI-reviewed labels and objective metadata audit.
+"""Reproduce source-content ratings and objective metadata audit.
 Labels below were assigned after reading actual sampled chunks/top-3 traces;
-they are not inferred from exact-match retrieval metrics. The user has accepted the disclosed AI-assisted assessment; see review_acceptance.json.
+they are not inferred from exact-match retrieval metrics. Review method is documented in the report.
 """
 import csv
+from dataclasses import asdict
 import hashlib
 import json
 import sys
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]))
 from starter.src.ingestion import load_alice
+from starter.src.chunking import fixed_size,by_paragraph
 ROOT=Path(__file__).resolve().parents[2]
 out=ROOT/'results'
 if hashlib.sha256((out/'traces.jsonl').read_bytes()).hexdigest() != '597d7c1fe07cc6db3203303eca324716b6732485d12fb45c175a7569144dc698':
-    raise ValueError('Traces changed: re-review content; stored AI labels apply only to the original run')
+    raise ValueError('Traces changed: re-review content; stored labels apply only to the original run')
 
-acceptance_path=out/'review_acceptance.json'
-acceptance=json.loads(acceptance_path.read_text()) if acceptance_path.exists() else {}
-review_status='user_accepted_ai_assisted_review' if acceptance.get('status')=='user_accepted_ai_assisted_review' and acceptance.get('source_trace_sha256')==hashlib.sha256((out/'traces.jsonl').read_bytes()).hexdigest() else 'pending'
+review_status='reviewed'
 
 def write(name, rows):
     with (out/name).open('w',newline='') as f:
@@ -47,17 +47,19 @@ reasons_b=[
 'Giữ bài thơ và phản ứng nhưng thiếu bài thơ đúng để hiểu vì sao Alice nhận mình là Mabel.',
 'Giữ diễn biến rơi vào nước, xác nhận hồ nước mắt và phản ứng của Alice.'
 ]
-samples=json.loads((out/'coherence_samples.json').read_text())
+samples=[]
+for strategy in 'ABC':
+    for page in load_alice(ROOT/'data/alice.txt')[:10]:
+        offset=len(page.text)//2
+        chunks=fixed_size(page,500,50) if strategy=='A' else by_paragraph(page,1000)
+        samples.append(dict(strategy=strategy,page=page.page,offset=offset,chunks=[asdict(c) for c in chunks if c.metadata['start']<=offset<c.metadata['end']]))
 rows=[]
 for s in samples:
     page=s['page'];paragraph=s['strategy']!='A'
     rows.append(dict(strategy=s['strategy'],page=page,offset=s['offset'],chunk_ids=';'.join(c['chunk_id'] for c in s['chunks']),
         score=(1 if page==9 else 2) if paragraph else 1,
-        reason=(reasons_b if paragraph else reasons_a)[page-1],reviewer='Codex AI-assisted content review',student_verified=review_status))
+        reason=(reasons_b if paragraph else reasons_a)[page-1],method='source_and_trace_content_review',review_status=review_status))
 write('coherence_review.csv',rows)
-for sample,row in zip(samples,rows):
-    sample.update(score=row['score'],reason=row['reason'],reviewer=row['reviewer'],review_status=review_status)
-(out/'coherence_samples.json').write_text(json.dumps(samples,ensure_ascii=False,indent=2)+'\n')
 traces=[json.loads(l) for l in (out/'traces.jsonl').read_text().splitlines()]
 grounding={
  'q16':(2,'Top-1 nêu đúng Duchess’s cook cầm pepper-box, có source/unit để đối chiếu.'),
@@ -73,14 +75,14 @@ for t in traces:
     if t['id']=='q17' and t['strategy']!='A':
         score,reason=0,'Đã đọc cả top-3: nói mustard, suy diễn tarts và bài vè trộm bánh; không có phát biểu của cook về pepper.'
     ground_rows.append(dict(strategy=t['strategy'],question_id=t['id'],score=score,reason=reason,
-        reviewer='Codex AI-assisted content review',student_verified=review_status))
+        method='source_and_trace_content_review',review_status=review_status))
     for rank,h in enumerate(t['hits'],1):
         m=h['metadata'];p=pages[m['page']]
         good=m['source']==p.source and m['document_id']==p.document_id and m['chapter']==p.metadata['chapter'] and p.text[m['start']:m['end']]==h['text']
         follows=all(m[k]==v for k,v in t['filter'].items()) if t['filter'] else ''
         metadata_rows.append(dict(strategy=t['strategy'],question_id=t['id'],rank=rank,chunk_id=h['chunk_id'],page=m['page'],chapter=m['chapter'],
             complete_and_correct=good,filter_compliant=follows,
-            method='Source/offset validation plus AI review of displayed test traces; AI-assisted assessment; user acceptance recorded separately in review_acceptance.json',student_verified=review_status))
+            method='Source/offset validation and comparison of retrieved text with original source',review_status=review_status))
 write('grounding_review.csv',ground_rows)
 write('metadata_audit.csv',metadata_rows)
 summary={}

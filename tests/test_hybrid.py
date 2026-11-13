@@ -6,6 +6,7 @@ from pathlib import Path
 from starter.src.hybrid import HybridRetriever,tokenize
 from starter.src.models import Chunk
 from starter.src.store import QdrantStore
+from starter.src.provenance import verify_recorded_input
 
 
 class FixtureReranker:
@@ -41,7 +42,7 @@ class HybridTests(unittest.TestCase):
         import hashlib
         run=json.loads(Path('results/extension/run.json').read_text())
         for path,digest in run['input_hashes'].items():
-            self.assertEqual(hashlib.sha256(Path(path).read_bytes()).hexdigest(),digest)
+            self.assertTrue(verify_recorded_input(Path.cwd(),path,digest))
         traces=[json.loads(line) for line in Path('results/extension/traces.jsonl').read_text().splitlines()]
         self.assertEqual(len(traces),60)
         self.assertEqual(sum(t['strategy']=='D' for t in traces),30)

@@ -1,0 +1,9 @@
+{
+  "tesseract": "tesseract 5.3.4",
+  "poppler": "pdftoppm version 24.02.0",
+  "ocr_language": "vie",
+  "dpi": 200,
+  "psm": 3,
+  "original_pdf_modified": false,
+  "note": "OCR config shared by new legal snapshots; no spelling correction based on retrieval outcomes."
+}

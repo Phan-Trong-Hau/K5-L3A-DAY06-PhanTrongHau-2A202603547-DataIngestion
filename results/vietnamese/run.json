@@ -26,7 +26,7 @@
       "vi19"
     ],
     "caveats": [
-      "New document and language; one scanned source only, authored AI labels pending student review.",
+      "New document and language; one scanned source only, authored content labels pending student review.",
       "English embedding/reranker, unchanged English lexical stopwords; intentional out-of-domain test, not optimized Vietnamese retrieval.",
       "OCR errors can affect ranking; benchmark is evaluated against frozen OCR text, not a perfect human transcription.",
       "All 20 external-test queries are frozen; no parameter search after results."

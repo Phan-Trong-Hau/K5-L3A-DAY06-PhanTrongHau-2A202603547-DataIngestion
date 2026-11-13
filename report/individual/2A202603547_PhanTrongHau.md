@@ -1,73 +1,97 @@
-# Báo cáo cá nhân — Day 06
+# Báo cáo cá nhân — Day 06: Data Ingestion Engineering
 
-Phan Trọng Hậu · 2A202603547 · L3A
+**Họ tên:** Phan Trọng Hậu · **MSSV:** 2A202603547 · **Lớp:** L3A
 
-## Dữ liệu và pipeline
+## 1. Mục tiêu và dữ liệu
 
-Chủ đề: truy xuất bằng chứng trong *Alice’s Adventures in Wonderland*, Lewis Carroll.
-Nguồn: https://www.gutenberg.org/ebooks/11 (bản cập nhật 26/06/2025).
-Tác giả mất năm 1898; trang nguồn công bố public domain tại Mỹ.
-Giữ nguyên bản tải và toàn bộ Project Gutenberg License ở `data/alice.txt`;
-manifest ghi ngày truy cập, version và SHA-256. Không có dữ liệu cá nhân hoặc key.
+Xây pipeline Python đọc và chuẩn hóa tài liệu, chia chunk, tạo semantic embedding thật,
+lưu vector bền vững có metadata filter, đánh giá top-3 và phân tích các đánh đổi.
+Corpus chính đáp ứng yêu cầu tối thiểu: Alice’s Adventures in Wonderland, **82 đơn vị liên tiếp**,
+mỗi đơn vị ít nhất **1.501 ký tự** sau chuẩn hóa; không nhân bản nội dung.
+Bỏ bìa, mục lục và giấy phép khỏi phần index; bản Gutenberg nguyên vẹn vẫn giữ nguồn và giấy phép.
+Unit là vị trí truy vết của text, không phải trang PDF hoặc trang sách in.
 
-Corpus có **82 đơn vị nội dung**, không phải 82 trang PDF. Mỗi đơn vị ≥1.500 ký tự
-sau chuẩn hóa NFC: gộp các đoạn liên tiếp trong cùng chương đến ngưỡng,
-ghép phần dư ngắn vào đơn vị cuối chương. Không lặp nội dung để đạt số lượng.
-Bỏ bìa, mục lục, illustration và giấy phép khỏi phần embedding; vẫn giữ trong bản gốc.
-`data/pages.json` chứa toàn văn đơn vị; `data/manifest.json` ghi số ký tự,
-chương và offset đầu đơn vị trong chương. Không có OCR hoặc trang rỗng.
+Mở rộng thêm bốn nguồn để kiểm tra tổng quát, trong đó ba nguồn là văn bản tiếng Việt:
 
-Chuẩn hóa xuống dòng và whitespace trong đoạn; giữ ranh giới đoạn.
-Hạn chế: thơ bị gộp dòng, định dạng nhấn mạnh `_..._` còn giữ nguyên;
-đơn vị nguồn chỉ là vị trí truy vết nhân tạo có quy tắc, không tương đương trang sách in.
-`load_pdf` cũng hỗ trợ trang vật lý và cảnh báo thiếu text nhưng không được dùng trong thí nghiệm này.
+| Nguồn | Bản gốc trong data | Phạm vi index |
+|---|---|---|
+| Alice (Gutenberg #11) | `data/alice.txt` | 82 đơn vị, 12 chương |
+| Nghị định 13/2023/NĐ-CP | `data/vietnamese/13nd.signed.pdf` | 39 trang scan: 28 trang phần nghị định, 1 danh mục phụ lục, 10 trang mẫu biểu |
+| Nghị định 69/2024/NĐ-CP | `data/multidoc/raw/nd69.pdf` | Toàn bộ 37 trang vật lý, gồm cả biểu mẫu |
+| Nghị định 42/2022/NĐ-CP | `data/multidoc/raw/nd42.pdf` | Toàn bộ 19 trang vật lý |
+| Sherlock Holmes (Gutenberg #1661) | `data/multidoc/raw/sherlock.txt` | Chỉ hai truyện đầu, 53 đơn vị ≥1.500 ký tự; bản gốc toàn sách và license được giữ |
 
-Embedding **BAAI/bge-small-en-v1.5**, 384 chiều, ONNX CPU qua FastEmbed 0.9.1,
-dùng `passage_embed` cho documents và `query_embed` cho queries, cùng model mọi cấu hình.
-Snapshot ONNX repo `Qdrant/bge-small-en-v1.5-onnx-Q`, revision và hash từng file trong
-`results/model_snapshot.json`. Lần tải lại upstream có thể đổi revision; đối chiếu hash trước khi so kết quả.
-Vector store **qdrant-client 1.20.0 local persistent** tại `.qdrant/`, collection A/B/C,
-cosine, exact brute-force search, top-3. Qdrant tự quản persistence, không tự viết SQLite hoặc vector search.
-Môi trường Python 3.14.9; các phiên bản và checksum nằm trong `results/run.json` và `requirements.lock.txt`.
+Không tự quy 39/37/19 trang vật lý thành số trang nội dung đủ điều kiện.
+Các văn bản pháp luật là **snapshot lịch sử**, dùng để đánh giá retrieval theo nguồn,
+không phải tư vấn pháp luật hoặc xác nhận hiệu lực hiện tại.
+Nguồn chính thức, giấy phép/sự cho phép, thời điểm truy cập, version, số ký tự và SHA-256 ở từng manifest;
+`data/sources.json` là danh mục chung. Chỉ lưu một bản text chuẩn hóa cho mỗi nguồn.
 
-Metadata: `document_id`, `source` là chuỗi; `page` là số thứ tự đơn vị;
-`chapter`, `chapter_title`, `language` lấy từ heading/ngôn ngữ bản gốc;
-`start/end` là offset ký tự chuẩn hóa trong đơn vị. Filter `chapter` kiểu chuỗi Roman numeral,
-giúp phân biệt phạm vi chương, chỉ nhận giá trị từ câu hỏi, không dùng gold source/page.
+## 2. Xử lý và lưu trữ
 
-Mỗi lần ingest thay snapshot collection, loại mọi chunk lỗi thời; ID là hash nguồn/offset/nội dung.
-Thực tế chạy hai lần cho mỗi collection, số lượng giữ nguyên 350/192/192.
-Cách này đơn giản nhưng không atomic, chưa phù hợp ghi đồng thời ở production.
-Không fallback sang mock. `results/errors.log` rỗng vì không có exception của pipeline;
-SDK có warning local search vốn đã exact, không ảnh hưởng kết quả.
+Chuẩn hóa Unicode NFC, whitespace; giữ ranh giới đoạn, document ID, source, page/unit và offset.
+Alice chia theo nhóm đoạn liên tiếp ≥1.500 ký tự trong từng chương; phần dư ngắn ghép vào đơn vị cuối.
+PDF scan dùng **Tesseract 5.3.4, vie, 200 DPI, PSM 3**; giữ nguyên byte PDF ký, không flatten hoặc ghi đè.
+Đã đối chiếu ảnh trang chứa evidence với text OCR. Không sửa chính tả OCR theo kết quả truy xuất.
+OCR còn lỗi như “đữ”, “thê”, “kế”; không có bản chép tay toàn văn nên chưa đo CER/WER.
+Văn bản thơ có thể bị gộp dòng khi chuẩn hóa.
 
-## Cấu hình và benchmark
+Metadata tối thiểu: `document_id`, `source`, `page`, `start/end`.
+`chapter` lấy từ heading nguồn; Nghị định 13 có ranh giới chương được đối chiếu ảnh khi OCR sai số chương.
+Trong phép thử mới, filter `language` dùng giá trị vi/en khi câu hỏi/ngữ cảnh đã cung cấp.
+Không lọc bằng gold source/page. Các PDF mới chưa trích xuất chương thì để trống, không đoán.
 
-- A: cửa sổ 500 ký tự, overlap 50, không filter.
-- B: gộp đoạn tối đa 1.000 ký tự; đoạn quá dài cắt theo khoảng trắng, không overlap; không filter.
-- C: dùng đúng chunk và vector của B, chỉ thêm filter chương khi câu hỏi cung cấp.
+Backend: **Qdrant local persistent**, cosine exact search, top-3; không tự thay bằng SQLite/vector Python.
+Kho Alice: `.qdrant/`; Nghị định 13: `.qdrant_vi/`; kho 5 nguồn: `.qdrant_multidoc/`.
+ID chunk ổn định từ nguồn, vị trí và text. Nạp snapshot hai lần giữ nguyên số bản ghi,
+loại chunk lỗi thời khi corpus thay đổi; cách này không atomic và chưa phù hợp ghi đồng thời ở production.
+Không fallback mock khi model hoặc backend lỗi. Vector tổng hợp chỉ có trong unit test.
 
-A–B thay chiến lược chunking (bao gồm size và overlap), nên không tách riêng tác động size khỏi ranh giới đoạn.
-B–C chỉ thay metadata filter. Mọi cấu hình cùng corpus, embedding, metric và 20 câu.
+Embedding gốc: **BAAI/bge-small-en-v1.5, 384 chiều**, FastEmbed passage/query adapters.
+Embedding đa ngữ: **intfloat/multilingual-e5-small**, ONNX INT8 từ Xenova,
+384 chiều, mean pooling có attention mask, L2 normalize, prefix `query: ` / `passage: ` cho mọi ngôn ngữ,
+giới hạn 512 token. Model/revision/checksum ở các `model_snapshot.json` và `e5_model_snapshot.json`.
+Môi trường Python 3.14.9, FastEmbed 0.9.1, qdrant-client 1.20.0; dependencies trong `requirements.lock.txt`.
 
-Benchmark được viết và kiểm tra evidence trước lần truy xuất đầu:
-15 dev q01–q15 thuộc chương I–X, 5 test q16–q20 thuộc XI–XII.
-Bốn câu có filter: q05, q08, q13 (dev), q16 (test), chương đã nêu ngay trong câu hỏi.
-Mỗi evidence được kiểm tra có nguyên văn trong nguồn chuẩn hóa; các nguồn tương đương có thể thêm `alternatives`.
-Không có câu không đáp án. Bao phủ câu trực tiếp, diễn đạt lại và điều kiện (q03, q18),
-nhưng nhìn chung bộ câu còn dễ, nhiều câu trả lời ngắn.
-Cùng một tác phẩm và nhân vật xuyên suốt gây tương quan dev/test; đây không phải holdout theo tài liệu độc lập.
+## 3. Cấu hình và benchmark
 
-Tiêu chí chọn được ghi trước trong `benchmark/protocol.json`:
-ưu tiên dev Evidence Hit@3, rồi dev Hit@1, ít chunk hơn, cuối cùng tên cấu hình.
-`selection.json` được ghi sau dev và trước mọi test retrieval. Không dùng test để đổi cấu hình.
+| Cấu hình | Chunk / model | Truy xuất |
+|---|---|---|
+| A | Fixed 500 ký tự, overlap 50 / BGE | Dense top-3, không filter |
+| B | Gộp đoạn ≤1.000 ký tự / BGE | Dense top-3, không filter |
+| C | Giống B | Thêm filter khi có input |
+| D | Giống B | Dense20 + BM25_20 → RRF k=60 top20 → cross-encoder ms-marco-MiniLM-L-6-v2 → top3 |
+| E | Giống B / BGE | Cùng candidate retrieval như D; dùng RRF top3, bỏ reranker |
+| F | Giống B / E5 đa ngữ | Dense top3 + filter |
+| G | Giống B / E5 đa ngữ | Dense20 + BM25_20 → RRF top3 + filter |
 
-## Kết quả chạy thật
+B–C chỉ đổi filter; A–B đổi cả size/overlap/ranh giới đoạn nên không tách riêng các yếu tố đó.
+D–E kiểm tra bỏ reranker; C–F đổi embedding; F–G thêm lexical/fusion; E–G đổi embedding.
+E/F/G là thí nghiệm mở rộng, không gộp vào yêu cầu giữ cùng model của A/B/C.
+Cosine, reranker logit và RRF không cùng thang điểm và không phải xác suất trả lời đúng.
 
-Hit yêu cầu đúng nguồn + đơn vị và **đủ toàn bộ evidence trong một chunk**.
-Chỉ đúng page nhưng thiếu evidence không phải hit; nhiều chunk hợp lại không thay metric chính.
+Bộ gốc: **20 câu = 15 dev / 5 test**, evidence được kiểm tra trong nguồn trước truy xuất.
+4 câu có filter chương: q05, q08, q13 và q16 (test). Chọn cấu hình bằng dev Hit@3,
+rồi Hit@1, ít chunk hơn; ghi quyết định C trước test, không đổi sang A khi thấy test tốt hơn.
+Dev chương I–X, test XI–XII; cùng tác phẩm/nhân vật nên không độc lập theo tài liệu.
 
-| Strategy | Split | Hit@1 | Evidence Hit@3 | Chunks | Ingest gồm nạp lại (s) | API USD |
+D được thêm **sau khi đã xem test gốc**: điểm test đó chỉ là diagnostic.
+Có thêm 10 câu tiếng Anh mới, chốt trước D; vẫn cùng sách, không coi là độc lập hoàn toàn.
+Nguồn Nghị định 13 có 20 câu tiếng Việt mới, giữ nguyên A/B/C/D; không chọn tham số trên tập này.
+
+Phép thử nhiều nguồn: **45 câu mới**, chốt trước chạy; dev là Nghị định 69 (15 câu),
+test là Nghị định 42 và Sherlock Holmes (30 câu). Tài liệu dev/test không trùng nhau;
+Alice/Nghị định 13 cùng nằm trong index làm distractor. Dùng cùng **566 chunk** cho C/D/E/F/G.
+Chọn G trên dev trước test; không sweep sau test. 20 câu Nghị định 13 cũ chỉ chạy diagnostic sau cùng.
+Có trực tiếp, diễn đạt lại, phủ định, điều kiện, ngoại lệ, hai dữ kiện, filter và truy vấn khác ngôn ngữ nguồn.
+
+## 4. Kết quả corpus chính và năm khía cạnh
+
+Hit yêu cầu đúng source/page và **đủ evidence đã chốt trong một chunk**.
+Chỉ đúng page hoặc ghép evidence từ nhiều chunk không thay định nghĩa chính.
+Exact alternatives được chấp nhận; đánh giá tương đương về ý nghĩa vẫn là giới hạn của bộ đo.
+
+| Cấu hình | Split | Hit@1 | Evidence Hit@3 | Chunk | Ingest gồm nạp lại (s) | API USD |
 |---|---|---|---|---|---|---|
 | A | dev | 5/15 | 9/15 | 350 | 15.559 | 0 |
 | A | test | 5/5 | 5/5 | 350 | 15.559 | 0 |
@@ -76,158 +100,89 @@ Chỉ đúng page nhưng thiếu evidence không phải hit; nhiều chunk hợp
 | C | dev | 9/15 | 14/15 | 192 | 1.032 | 0 |
 | C | test | 4/5 | 4/5 | 192 | 1.032 | 0 |
 
-C dùng cache vector B nên thời gian thấp không chứng minh filter làm embedding nhanh hơn.
-A/B gồm tạo embedding; tất cả gồm hai lần ghi snapshot. Chưa đo riêng latency truy vấn,
-chưa đo RAM, chưa tính CPU/điện; chi phí 0 là **chi phí API**.
+C tái sử dụng cache vector của B; không kết luận C làm embedding nhanh hơn.
+Độ dài A: min/median/p95/max = 96/500/500/500, trung bình 446,3; tổng 156.220 ký tự kể cả overlap.
+B/C: 79/756,5/986,5/999, trung bình 742,7; tổng 142.600 ký tự chunk.
+Số bản ghi sau nạp lại: A 350, B/C 192, không trùng.
 
-| Strategy | Tổng ký tự chunk | Min / median / p95 / max | Độ dài trung bình |
-|---|---|---|---|
-| A | 156220 | 96 / 500.0 / 500.0 / 500 | 446.3 |
-| B | 142600 | 79 / 756.5 / 986.5 / 999 | 742.7 |
-| C | 142600 | 79 / 756.5 / 986.5 / 999 | 742.7 |
+Coherence lấy cùng 10 vị trí giữa 10 đơn vị đầu theo protocol; A có hai chunk overlap ở một vị trí,
+đọc cả hai (cùng mức). Thang 0 = mất ý/chủ thể, 1 = hiểu một phần, 2 = trọn ý/tự hiểu được.
+Grounding đọc top-3 cùng 5 câu test: 0 không evidence, 1 thiếu điều kiện, 2 đủ trả lời và truy nguồn.
+Metadata kiểm tra toàn bộ 45 kết quả test với source/page/chapter/offset nguồn.
+Các nhãn có lý do cụ thể, không suy điểm nội dung chỉ từ exact match.
 
-### Nhãn nội dung và metadata — AI hỗ trợ, người dùng đã chấp nhận
-
-Codex đã đọc text của các chunk mẫu và top-3 test, đối chiếu nội dung để ghi nhãn và lý do.
-Đây là **AI-assisted review**, không khai là học viên đã chấm thủ công độc lập.
-Người dùng đã yêu cầu hoàn tất và chấp nhận cách đánh giá AI hỗ trợ trong phiên làm việc. Các CSV ghi `student_verified=user_accepted_ai_assisted_review`; `results/review_acceptance.json` lưu phát biểu chấp nhận, thời điểm và checksum. Đây là chấp nhận phương pháp/kết quả, không phải tuyên bố học viên đã tự đọc từng dòng hoặc có người chấm độc lập. Không suy nhãn coherence/grounding từ exact match.
-
-Coherence lấy cùng 10 đơn vị nguồn đầu, tại offset giữa đơn vị theo protocol chốt trước.
-Nếu overlap A có hai chunk bao phủ, đọc cả hai và ghi một nhãn vị trí
-(cả hai cùng mức trong mẫu này); B/C có cùng mẫu và nhãn vì chunk giống hệt.
-Mẫu chỉ phủ chương I–II nên không đại diện toàn corpus. Thang 0/1/2 theo GUIDE.
-
-| Strategy | Coherence /2 (n=10) | Metadata đúng/đủ | Top-3 tuân thủ filter test | Grounding counts 0/1/2 | Grounding mean /2 |
+| Cấu hình | Coherence /2 (n=10) | Metadata đủ/đúng | Top3 tuân thủ filter test | Grounding counts 0/1/2 | Grounding /2 |
 |---|---|---|---|---|---|
-| A | 1.00 | 15/15 | 0/1 | 0 / 0 / 5 | 2.00 |
-| B | 1.90 | 15/15 | 1/1 | 1 / 0 / 4 | 1.60 |
-| C | 1.90 | 15/15 | 1/1 | 1 / 0 / 4 | 1.60 |
+| A | 1.00 | 15/15 | 0/1 | 0/0/5 | 2.00 |
+| B | 1.90 | 15/15 | 1/1 | 1/0/4 | 1.60 |
+| C | 1.90 | 15/15 | 1/1 | 1/0/4 | 1.60 |
 
-Metadata kiểm tra toàn bộ 5 test × top-3 × 3 cấu hình = 45 bản ghi:
-source/document ID/page/chapter và text tại start:end khớp nguồn; CSV ghi từng dòng.
-B tình cờ cũng tuân thủ filter ở q16 dù không cưỡng chế lọc; chỉ C bảo đảm phạm vi truy vấn.
-`source + page + offset` giúp mở lại đúng evidence. Hạn chế: số unit không tương ứng trang in,
-chapter không đủ diễn đạt điều kiện người dùng phức tạp và filter sai có thể loại bằng chứng đúng.
+A–B: dev Hit@3 tăng 9→13/15, coherence tăng 1,00→1,90, chunk giảm 350→192;
+đổi lại chunk dài có thể loãng tín hiệu truy vấn. B–C: 13→14/15, chủ yếu q13 lọc chương IX.
+B tình cờ cũng tuân thủ chương ở q16, nhưng chỉ C cưỡng chế filter.
+`source + page + offset` giúp truy vết; unit không phải trang in và filter sai có thể loại evidence đúng.
+Grounding là chất lượng **bằng chứng truy xuất**, không phải độ chính xác câu trả lời sinh bởi LLM.
 
-Grounding chỉ đánh giá độ đủ của **evidence retrieval**, không đánh giá độ chính xác trả lời LLM.
-A đủ evidence cho cả 5 test; B/C thiếu hoàn toàn lời cook ở q17, bốn câu còn lại đủ.
-Đường dẫn: `results/traces.jsonl`, `coherence_samples.json`, `coherence_review.csv`,
-`grounding_review.csv`, `metadata_audit.csv`, `review_summary.json`.
+Ví dụ sai và đánh đổi:
+- q08/A, unit 35: đúng page nhưng top-1 bắt đầu ở đuôi câu, mất “It’s a Cheshire cat”; không đủ gold.
+- q14/C, unit 62: lấy đoạn Classics master/crab và giờ lessons, thiếu conger-eel ghé mỗi tuần.
+- q17/B/C, gold 75: top3 nói mustard/tarts/bài vè, thiếu “Pepper, mostly”; A tìm đúng top1.
+- D đưa gold q14 và q17 từ dense rank 5, BM25 rank 1 lên top1; q26 bộ mới vẫn sai top1, đúng rank3.
 
-## Phân tích và kết luận
+## 5. Kiểm tra nguồn mới và các biến thể
 
-**A–B:** dev Hit@3 tăng 9/15 → 13/15; số chunk giảm 350 → 192,
-coherence mẫu tăng 1.00 → 1.90. Chunk dài hơn thường giữ đủ evidence và chủ ngữ,
-nhưng làm embedding loãng đối với câu hỏi ngắn. Không thể kết luận cải thiện hoàn toàn do theo đoạn
-vì đồng thời thay size và overlap trong chiến lược chunking.
+| Phép thử | C | D | E | F | G |
+|---|---|---|---|---|---|
+| Nghị định 13 riêng, Hit@3 /20 | 12 | 16 | — | — | — |
+| 5 nguồn: dev /15 | 8 | 10 | 9 | 10 | 11 |
+| 5 nguồn: test mới /30 | 12 | 18 | 15 | 17 | 19 |
+| 5 nguồn: diagnostic cũ /20 | 7 | 15 | 14 | 16 | 18 |
 
-**B–C:** dev tăng 13/15 → 14/15, chủ yếu nhờ q13 lọc chương IX loại các đoạn
-về bài học ở chương khác. Test không đổi 4/5. Với q16, B đã lấy ba đoạn đúng chương nên filter
-không tạo thêm gain; với q17 không có filter, C phải trả giống B.
+D trên Alice: Hit@3 15/15 dev, 5/5 test đã xem, 10/10 bộ câu mới; Hit@1 tương ứng 12/15, 5/5, 9/10.
+Không lấy kết quả này làm bảo đảm tổng quát: D chỉ 16/20 trên nguồn tiếng Việt riêng.
+Bốn lỗi vi03/vi06/vi10/vi18 đều có gold trong pool nhưng bị rerank xuống hạng 7/18/4/5;
+vi10 là trường hợp reranker làm xấu kết quả so với C. OCR và model tiếng Anh là các giới hạn.
 
-Ví dụ lỗi đã đối chiếu trace:
+| Cấu hình | Dev Hit@1 | Dev Hit@3 | Test Hit@1 | Test Hit@3 | Retrieval trung bình ms* |
+|---|---|---|---|---|---|
+| C | 4/15 | 8/15 | 8/30 | 12/30 | 2.6 |
+| D | 7/15 | 10/15 | 11/30 | 18/30 | 961.6 |
+| E | 8/15 | 9/15 | 10/30 | 15/30 | 3.5 |
+| F | 10/15 | 10/15 | 15/30 | 17/30 | 1.7 |
+| G | 10/15 | 11/15 | 17/30 | 19/30 | 3.8 |
 
-1. **q08, A, unit 35/chương VI:** top-1 bắt đầu ở đuôi “hess, and that’s why”,
-   mất phát biểu “It’s a Cheshire cat”. Đúng unit nhưng không đủ evidence;
-   các chunk còn lại trong top-3 cũng không đủ. Đây là lỗi cắt ý, không được tính hit chỉ vì đúng page.
-2. **q14, C, unit 62/chương IX:** top-1 bàn về Classics master là crab và số giờ lessons,
-   không có Drawling-master conger-eel ghé mỗi tuần. Cả top-3 thiếu evidence;
-   metadata đầy đủ không bảo đảm semantic ranking đúng.
-3. **q17 test, B/C, gold unit 75/chương XI:** top-3 nói mustard (57),
-   diễn giải tarts (80), bài vè trộm tarts (72), không có lời cook “Pepper, mostly”.
-   A tìm đúng đoạn ngắn ở top-1. Giữ nguyên cấu hình sau khi thấy lỗi test.
+* Chưa gồm thời gian embed query dùng chung, được lưu riêng trong trace. D tốn thêm cross-encoder;
+G không có bước đó. Ingest của lần chạy thành công dùng cache; không coi khoảng 2 giây ghi collection là thời gian tạo embedding từ đầu.
+Có lỗi điều phối ghép trùng trường `kind` ở lần đầu, đã sửa trước khi có kết quả dev/test hoàn chỉnh;
+không đổi câu hỏi, gold, model hoặc tham số; embeddings đã tạo được dùng lại.
 
-Chọn **C theo dev**, không đổi sang A dù A thắng trên 5 câu test.
-Phù hợp khi câu hỏi cung cấp phạm vi chương đáng tin và ưu tiên đủ evidence trên dev.
-Không có bằng chứng chiến lược này tốt nhất tổng quát. Mẫu test nhỏ và cùng truyện,
-evidence khớp chuỗi có thể bỏ sót diễn đạt tương đương, nhãn AI chưa có người chấm độc lập,
-coherence chỉ phủ đầu sách; thời gian có cache và chưa đo lặp nên không phải benchmark hiệu năng chặt chẽ.
+G thắng trên dev 11/15 rồi được cố định. Trên test mới G 19/30, D 18/30: chỉ hơn một câu, chưa đủ
+kết luận mạnh. G so với D có 3 ca thắng (m4201, m4213, msh07), 2 ca thua (msh03, msh13).
+Theo nguồn: Nghị định 42 G 13/15, D 11/15; Sherlock G 6/15, D 7/15.
+Không có cấu hình tốt nhất mọi nguồn: model đa ngữ/fusion giúp tiếng Việt nhưng vẫn có thể làm kém truyện tiếng Anh.
+E bỏ reranker chỉ đạt 15/30, thấp hơn D; F đa ngữ dense đạt 17/30; G thêm BM25/RRF lên 19/30.
 
-Nếu mở rộng: tạo benchmark mới có nhiều câu điều kiện/đa bằng chứng và người chấm độc lập;
-đánh giá sentence-aware splitting, overlap theo câu, reranker hoặc hybrid trên dev mới;
-không dùng tập test đã xem để tinh chỉnh rồi gọi là holdout độc lập.
+## 6. Kết luận và giới hạn
 
-## Tái lập, AI và trạng thái nộp
+C là lựa chọn baseline theo dev ban đầu; G là lựa chọn theo dev của thí nghiệm 5 nguồn.
+Giữ nguyên các quyết định sau khi xem test. Tập test nhỏ, một nguồn dev và hai nguồn test,
+nhãn đối chiếu nguồn chưa có reviewer độc lập; không suy rộng ngoài corpus.
+Không tách riêng hoàn toàn tác động ngôn ngữ, OCR, thể loại và cạnh tranh giữa tài liệu.
+Strict quote có thể bỏ sót evidence tương đương; vi03 có các vai trò định nghĩa gần nhau cần cân nhắc khi diễn giải.
+Mẫu coherence chỉ ở đầu Alice, không đại diện toàn bộ sách hoặc PDF mới.
+Không có ablation đa ngữ reranker, đo RAM/điện hay kiểm thử hiệu năng lặp nhiều lần.
+Chi phí API toàn bộ 0 USD, chưa tính CPU/điện/tải model.
+Nếu mở rộng tiếp, dùng tài liệu dev tiếng Anh và tiếng Việt riêng, thêm nhãn độc lập và test mới;
+không tinh chỉnh bằng các tập test đã xem rồi báo như đánh giá độc lập.
 
-Chạy từ root theo README: cài `requirements.lock.txt`,
-`python -m starter.src.run`, `python -m unittest discover -s tests -v`.
-Bốn test đã pass: phủ nội dung/ranh giới chunk, evidence đầy đủ/alternative,
-vector-store filter/persistence/snapshot thay dữ liệu, chuẩn hóa và số đơn vị corpus.
-Vectors tổng hợp trong unit test chỉ để kiểm tra backend; mọi số liệu thí nghiệm dùng model thật.
-Không có kết quả chatbot sinh câu trả lời; không yêu cầu chatbot trong đề.
+**Công cụ hỗ trợ:** sử dụng Codex để hỗ trợ triển khai và rà soát; số liệu lấy từ pipeline chạy local.
+Nhãn nội dung dựa trên đối chiếu nguồn/trace có hỗ trợ công cụ, không khai là đánh giá độc lập của con người.
 
-AI sử dụng: Codex đọc đề, viết code/benchmark, thực thi model local, kiểm tra số liệu,
-đọc mẫu và hỗ trợ phân tích/nhãn. Người dùng đã chấp nhận phương pháp và kết quả đánh giá AI hỗ trợ; không khai là chấm độc lập của con người. Điểm và lý do giữ nguyên, chỉ chốt trạng thái chấp nhận. Bản bàn giao là commit trên nhánh main của repo ghi trong STUDENT.md; lấy hash bằng `git rev-parse HEAD`. Học viên có thể đọc lại code/trace để trình bày và gửi link qua kênh lớp; không tự suy diễn deadline hoặc khai đã gửi qua kênh lớp.
+## 7. Tái lập và minh chứng
 
-
-## Mở rộng D — hybrid + cross-encoder sau khi đã xem test
-
-Mục tiêu: sửa lỗi ranking bằng candidate retrieval rộng hơn; giữ nguyên kết quả A/B/C và quyết định C ban đầu.
-Giao thức riêng `benchmark/extension_protocol.json` chốt trước khi chạy D:
-chunk và embedding đúng B, dense top-20 + BM25 top-20, RRF đều trọng số (k=60),
-rerank 20 ứng viên bằng `Xenova/ms-marco-MiniLM-L-6-v2`, lấy top-3.
-BM25 k1=1.5, b=0.75, token Unicode lower-case bỏ stopword; IDF trên toàn bộ corpus B;
-filter áp dụng trước xếp hạng ở cả nhánh dense và lexical. Reranker chạy CPU qua FastEmbed,
-đầu ra là raw logit, không phải cosine hoặc xác suất. Không đưa evidence/gold vào retriever.
-Nguồn API/model: https://qdrant.tech/documentation/fastembed/fastembed-rerankers/
-Snapshot và hash tại `results/extension/model_snapshot.json`.
-
-Không đổi cấu hình D sau khi xem kết quả. Thêm q21–q30 có evidence đã kiểm tra,
-chốt trước lần chạy D, đánh giá cả A/B/C/D. Cùng corpus nên chỉ mới ở cấp câu hỏi,
-không tuyên bố độc lập hoàn toàn hoặc áp dụng cho mọi dữ liệu.
-`results/extension/freeze.json` ghi thời điểm và checksum đầu vào trước truy xuất.
-
-| Cấu hình / tập | Hit@1 | Evidence Hit@3 |
-|---|---|---|
-| D / dev gốc | 12/15 | 15/15 |
-| D / test gốc đã xem | 5/5 | 5/5 |
-| A / 10 câu mới | 6/10 | 10/10 |
-| B / 10 câu mới | 7/10 | 9/10 |
-| C / 10 câu mới | 8/10 | 10/10 |
-| D / 10 câu mới | 9/10 | 10/10 |
-
-D đạt full Hit@3 trên cả ba tập được đo, nhưng chưa full top-1 dev và bộ câu mới.
-Test gốc chỉ là diagnostic sau khi phân tích lỗi, không báo là holdout độc lập.
-Ở tập mới D không hơn A/C về Hit@3; top-1 tốt hơn trong mẫu nhỏ này,
-đổi lại thêm model và chi phí tính toán. Chưa kiểm tra khả năng tổng quát trên tác phẩm khác.
-
-q14: chunk chứa Drawling-master ở dense rank 5, BM25 rank 1; reranker đưa lên top-1.
-q17: chunk có “Pepper, mostly” cũng ở dense rank 5, BM25 rank 1;
-reranker đưa lên top-1, sửa lỗi top-3 của B/C mà không hardcode đáp án.
-q26 là lỗi còn lại: top-1 D nói về Tortoise thay vì nguồn gốc tên “lessons”;
-evidence đầy đủ ở rank 3. Giữ nguyên lỗi, không sửa tham số theo bộ mới.
-
-30 truy vấn D trung bình 1.012 giây/câu (gồm embed query, dense, BM25, fusion và rerank,
-không tính nạp model riêng). Tổng lượt mở rộng 30.933 giây; reranker đã có cache tải,
-chi phí API 0 USD, không tính điện/CPU. Không so trực tiếp với thời gian ingest A/B/C.
-D dùng lại 192 chunk B, không nhân đôi collection và không gọi dịch vụ trả phí.
-Không suy nhãn grounding/coherence cho D chỉ từ Hit@3; chưa có nhãn thủ công mới.
-
-Artifacts mở rộng: `results/extension/traces.jsonl` (60 trace, gồm 30 D và 30 A/B/C trên bộ mới),
-`metrics.json`, `run.json`, `freeze.json`, `model_snapshot.json`, `tests.txt`.
-Checksum chứng minh trace và metrics A/B/C gốc giữ nguyên. Sáu tests pass, bao gồm
-hybrid fusion/dedup/rerank và filter cả hai nhánh; vector/reranker giả chỉ có trong fixture unit test,
-tất cả số liệu benchmark dùng model thật. UI hỗ trợ D trực tiếp và trace đã lưu,
-ghi rõ logit và trạng thái sau test. Chạy `python -m starter.src.run_extension` khi UI đã dừng,
-sau đó `python -m starter.src.demo --port 18763`.
-
-## Kiểm tra chuyển miền sang PDF tiếng Việt
-
-Đã thêm phép thử trên file `13nd.signed.pdf` do học viên cung cấp (Nghị định 13/2023/NĐ-CP,
-bản scan 39 trang). Chốt 20 câu tiếng Việt mới trước khi chạy, giữ nguyên model/cấu hình.
-Evidence Hit@3: A 6/20, B 11/20, C 12/20, D 16/20. Không sửa tham số theo tập mới.
-Bốn lỗi D còn lại là reranking hạ chunk đúng dưới top-3; không tuyên bố đạt tuyệt đối.
-Xem phương pháp OCR, giới hạn và phân tích trong [báo cáo nguồn mới](VIETNAMESE_EXTERNAL_TEST.md).
-
-
-## Chốt hồ sơ đánh giá và bàn giao
-
-Có đủ 5 khía cạnh bắt buộc cho A/B/C: retrieval theo split; 30 nhãn coherence cùng 10 vị trí;
-45 bản ghi kiểm tra metadata; 15 nhãn grounding trên cùng 5 câu test; phân tích A–B và B–C,
-ví dụ lỗi và tài nguyên. Người dùng đã chấp nhận đánh giá AI hỗ trợ; nguồn nhãn, thang điểm,
-lý do, hash và trạng thái được công khai ở `results/review_acceptance.json` cùng ba CSV.
-Không thay số liệu hoặc nâng nhãn để đạt điểm, không tuyên bố có người chấm độc lập.
-D và tiếng Việt là thí nghiệm mở rộng; không dùng điểm test để sửa cấu hình rồi báo lại như holdout độc lập.
-Kết quả audit và bộ kiểm thử cuối tại `results/repo_audit.json`, `repo_audit_tests.txt`, `repo_audit_ui.txt`.
-Các mốc 4/6/8 tests ở phần lịch sử thể hiện từng giai đoạn; kiểm tra chốt bài xem các file audit mới nhất.
-Checklist đối chiếu đề tại `SUBMISSION_STATUS.md`. Nhánh bàn giao: `main`; hash commit được ghi trong bàn giao Git.
+Setup/run theo README root. `requirements.lock.txt` khóa dependencies; dữ liệu nguồn kèm manifest và license/sự cho phép.
+`results/` là baseline; `results/extension/` là D; `results/vietnamese/` là phép thử riêng;
+`results/multidoc/` là 5 nguồn. Mỗi bộ có metrics, top3 trace, config/freeze, thời gian và model snapshot.
+Ba CSV `coherence_review.csv`, `grounding_review.csv`, `metadata_audit.csv` lưu nhãn/lý do cho năm tiêu chí.
+`results/provenance.json` ghi thay đổi metadata đóng gói và text đa nguồn được tái dựng, không thay câu hỏi/gold/text/rank/score.
+Kết quả kiểm tra hiện tại ở `results/validation.json`; UI demo cổng 18763 có các màn hình so sánh và mở nguồn.

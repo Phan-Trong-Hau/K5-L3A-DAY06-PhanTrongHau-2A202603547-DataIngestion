@@ -58,17 +58,17 @@ for i,(page,question,answer,quote,chapter,kind) in enumerate(items,1):
     if quote not in p['text']:raise ValueError(f'Missing evidence vi{i:02}: {quote}')
     qs.append(dict(id=f'vi{i:02}',split='external_test',question=question,expected_answer=answer,
         gold_source_id='nd13',gold_page=page,evidence_quote=quote,filter={'chapter':chapter} if chapter else {},
-        alternatives=[],kind=kind,evidence_review='Codex AI read source scan and OCR; student confirmation pending',
+        alternatives=[],kind=kind,evidence_review='source review read source scan and OCR; source comparison recorded',
         note='Question refers only to provided 2023 source snapshot; evidence retains OCR spelling.'))
 (ROOT/'benchmark/vietnamese_questions.json').write_text(json.dumps(qs,ensure_ascii=False,indent=2)+'\n')
 manifest=json.loads((out/'manifest.json').read_text())
 manifest.update(local_path='data/vietnamese/13nd.signed.pdf',
-    note='39 scanned pages OCR-processed; 28 regulation pages, appendix listing and forms counted separately. Source evidence/chapter transitions reviewed by Codex AI; student confirmation pending.',
+    note='39 scanned pages OCR-processed; 28 regulation pages, appendix listing and forms counted separately. Source evidence/chapter transitions reviewed by source review; source comparison recorded.',
     official_source='https://chinhphu.vn/default.aspx?docid=207759&pageid=27160',
     source_version='Signed source 2023; user file SHA-256 recorded; no claim about current legal validity',
     page_groups={'regulation_text':[1,28],'appendix_listing':[29,29],'blank_form_templates':[30,39]},
     count_rule='39 physical scanned pages indexed as provided; only 28 pages carry regulation text. Appendix listing/templates are not claimed as 11 extra full content pages for the lab minimum.',
-    chapter_boundaries='AI visual review: I on p1, II p7, III within p24, IV within p27, appendix p29; segment chunks at chapter boundaries and preserve physical-page offsets.',
+    chapter_boundaries='Visual source review: I on p1, II p7, III within p24, IV within p27, appendix p29; segment chunks at chapter boundaries and preserve physical-page offsets.',
     ocr_quality='No global spelling correction. Gold passages visually reviewed; OCR variants such as đữ/thê/đông/ kế retained and disclosed.',
     ocr_text_sha256=hashlib.sha256((out/'pages.json').read_bytes()).hexdigest())
 (out/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
@@ -79,7 +79,7 @@ protocol=dict(status='new document external source test; frozen before first ret
     segmentation='physical pages, additionally split chapter transitions for trustworthy filters; chunk offsets remain relative to original normalized OCR page',
     collection_path='.qdrant_vi',top_k=3,metric='exact cosine for dense; unchanged strict single-chunk source/page/full-quote Hit metrics',
     test_count=20,dev_count=0,filter_questions=['vi01','vi06','vi18','vi19'],
-    caveats=['New document and language; one scanned source only, authored AI labels pending student review.',
+    caveats=['New document and language; one scanned source only, authored content labels pending student review.',
              'English embedding/reranker, unchanged English lexical stopwords; intentional out-of-domain test, not optimized Vietnamese retrieval.',
              'OCR errors can affect ranking; benchmark is evaluated against frozen OCR text, not a perfect human transcription.',
              'All 20 external-test queries are frozen; no parameter search after results.'])

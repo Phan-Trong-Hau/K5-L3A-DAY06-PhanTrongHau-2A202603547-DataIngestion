@@ -1,1 +1,0 @@
-PASS: A/B/C/D saved/live, Vietnamese traces/metrics/source PDF hash/render labels, new holdout, score labels, D chapter filter; render smoke only (no visual browser).

@@ -2,3 +2,4 @@
 # Gutenberg includes original CRLF/trailing spaces; do not normalize or diff as code.
 data/alice.txt -text -diff
 data/vietnamese/13nd.signed.pdf -text -diff
+data/multidoc/raw/* -text -diff

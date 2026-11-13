@@ -1,16 +1,10 @@
-# Pipeline đã hoàn thiện
+# Chạy pipeline
 
-Bản làm dùng **Qdrant local persistent + FastEmbed ONNX CPU**, không cần API key hoặc Docker.
-Xem [README ở root](../README.md) để setup, chạy và đọc kết quả.
-
-Từ root:
+Setup và kết quả xem [README root](../README.md). Chạy từ root repo:
 
 ```bash
-uv venv --python 3.14 .venv
-uv pip install --python .venv/bin/python -r requirements.lock.txt
 .venv/bin/python -m starter.src.run
-.venv/bin/python -m unittest discover -s tests -v
+.venv/bin/python -m starter.src.demo --port 18763
 ```
 
-Hoặc sau khi kích hoạt venv, từ thư mục `starter/`: `python -m src.run`.
-`docker-compose.yml`, `init.sql` và `scripts/check_setup.py` được giữ làm tài liệu starter PostgreSQL ban đầu; không phải backend của thí nghiệm này.
+Backend thực tế: Qdrant local + FastEmbed ONNX CPU, không cần Docker hoặc API key.

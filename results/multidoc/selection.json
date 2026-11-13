@@ -1,0 +1,69 @@
+{
+  "strategy": "G",
+  "criterion": "Max dev Hit@3, then dev Hit@1, then lower mean retrieval latency, then strategy name; select among C,D,E,F,G before any test query retrieval.",
+  "frozen_at": "2026-11-13T11:48:49.832885+00:00",
+  "dev_metrics": {
+    "C/dev": {
+      "n": 15,
+      "hit1": {
+        "hits": 4,
+        "rate": 0.26666666666666666
+      },
+      "hit3": {
+        "hits": 8,
+        "rate": 0.5333333333333333
+      }
+    },
+    "D/dev": {
+      "n": 15,
+      "hit1": {
+        "hits": 7,
+        "rate": 0.4666666666666667
+      },
+      "hit3": {
+        "hits": 10,
+        "rate": 0.6666666666666666
+      }
+    },
+    "E/dev": {
+      "n": 15,
+      "hit1": {
+        "hits": 8,
+        "rate": 0.5333333333333333
+      },
+      "hit3": {
+        "hits": 9,
+        "rate": 0.6
+      }
+    },
+    "F/dev": {
+      "n": 15,
+      "hit1": {
+        "hits": 10,
+        "rate": 0.6666666666666666
+      },
+      "hit3": {
+        "hits": 10,
+        "rate": 0.6666666666666666
+      }
+    },
+    "G/dev": {
+      "n": 15,
+      "hit1": {
+        "hits": 10,
+        "rate": 0.6666666666666666
+      },
+      "hit3": {
+        "hits": 11,
+        "rate": 0.7333333333333333
+      }
+    }
+  },
+  "mean_dev_retrieval_seconds": {
+    "C": 0.002545155533880461,
+    "D": 1.0588176173337465,
+    "E": 0.0035571609330266557,
+    "F": 0.0016509348000302755,
+    "G": 0.006074233800124299
+  }
+}

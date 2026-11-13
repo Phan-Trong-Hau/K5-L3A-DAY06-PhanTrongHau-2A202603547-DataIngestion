@@ -13,3 +13,9 @@ __pycache__/
 
 .ocr_cache/
 .qdrant_vi/
+
+.qdrant_multidoc/
+
+# Runtime diagnostic outputs
+results/**/errors.log
+results/coherence_samples.json

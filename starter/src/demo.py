@@ -10,6 +10,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
 from .provenance import local_source_path
+from .corpus import load_multidoc_pages
 
 ROOT = Path(__file__).resolve().parents[2]
 UI = ROOT / 'starter/ui'
@@ -35,7 +36,12 @@ class DemoService:
         if (ROOT/'results/vietnamese/metrics.json').exists():
             vi = dict(metrics=read('results/vietnamese/metrics.json'),statistics=read('results/vietnamese/statistics.json'),
                       questions=read('benchmark/vietnamese_questions.json'),manifest=read('data/vietnamese/manifest.json'))
-        return dict(vietnamese=vi,extension_metrics=extension,
+        multidoc = None
+        if (ROOT/'results/multidoc/metrics.json').exists():
+            multidoc = dict(metrics=read('results/multidoc/metrics.json'),by_source=read('results/multidoc/by_source.json'),
+                by_kind=read('results/multidoc/by_kind.json'),selection=read('results/multidoc/selection.json'),run=read('results/multidoc/run.json'),
+                manifest=read('data/multidoc/manifest.json'),questions=read('benchmark/multidoc_questions.json')+[dict(q,split='diagnostic') for q in read('benchmark/vietnamese_questions.json')])
+        return dict(multidoc=multidoc,vietnamese=vi,extension_metrics=extension,
                     extension_config=read('benchmark/extension_protocol.json') if extension else None,
                     holdout_questions=read('benchmark/extension_holdout.json') if extension else [],
                     strategies=list('ABCD') if extension else list('ABC'),
@@ -46,7 +52,7 @@ class DemoService:
                     live_index_exists=(ROOT / '.qdrant/meta.json').is_file())
 
     def traces(self, question_id, corpus='alice'):
-        trace_path = ROOT/('results/vietnamese/traces.jsonl' if corpus=='nd13' else 'results/traces.jsonl')
+        trace_path = ROOT/({'nd13':'results/vietnamese/traces.jsonl','multidoc':'results/multidoc/traces.jsonl'}.get(corpus,'results/traces.jsonl'))
         rows = [json.loads(line) for line in trace_path.read_text(encoding='utf-8').splitlines()]
         extension_path = ROOT/'results/extension/traces.jsonl'
         if corpus=='alice' and extension_path.exists():
@@ -59,10 +65,10 @@ class DemoService:
         return matches
 
     def page(self, page, document='alice'):
-        if document not in ('alice','nd13'):raise ValueError('Unknown document')
-        path=ROOT/('data/vietnamese/pages.json' if document=='nd13' else 'data/pages.json')
-        pages = json.loads(path.read_text(encoding='utf-8'))
-        matches = [p for p in pages if p['page'] == page]
+        if document not in ('alice','nd13','nd69','nd42','sherlock'):raise ValueError('Unknown document')
+        path=ROOT/('data/vietnamese/pages.json' if document=='nd13' else 'data/pages.json' if document=='alice' else 'data/multidoc/pages.json')
+        pages = load_multidoc_pages(ROOT) if document in ('nd69','nd42','sherlock') else json.loads(path.read_text(encoding='utf-8'))
+        matches = [p for p in pages if p['page'] == page and p.get('document_id', 'alice')==document]
         if not matches:
             raise ValueError('Không tìm thấy đơn vị nguồn.')
         return matches[0]
@@ -129,10 +135,13 @@ class Handler(BaseHTTPRequestHandler):
         try:
             if parsed.path == '/api/summary':
                 return self.send_json(service.summary())
+            if parsed.path == '/api/multidoc/traces':
+                return self.send_json(service.traces(parse_qs(parsed.query).get('id',[''])[0],corpus='multidoc'))
             if parsed.path == '/api/vi/traces':
                 return self.send_json(service.traces(parse_qs(parsed.query).get('id', [''])[0],corpus='nd13'))
-            if parsed.path == '/source/nd13.pdf':
-                manifest=json.loads((ROOT/'data/vietnamese/manifest.json').read_text())
+            if parsed.path in ('/source/nd13.pdf','/source/nd69.pdf','/source/nd42.pdf'):
+                document=Path(parsed.path).stem
+                manifest=json.loads((ROOT/'data/vietnamese/manifest.json').read_text()) if document=='nd13' else json.loads((ROOT/f'data/multidoc/{document}_manifest.json').read_text())
                 source=local_source_path(ROOT,manifest)
                 if not source.is_file():return self.send_json({'error':'Original PDF not available on this machine'},404)
                 body=source.read_bytes()

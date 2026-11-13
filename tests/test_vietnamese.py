@@ -5,7 +5,7 @@ from pathlib import Path
 import unittest
 from starter.src.run_vietnamese import build_chunks
 from starter.src.evaluation import summarize
-from starter.src.provenance import recorded_input_path,local_source_path
+from starter.src.provenance import verify_recorded_input,local_source_path
 
 
 class VietnameseTests(unittest.TestCase):
@@ -42,8 +42,7 @@ class VietnameseTests(unittest.TestCase):
     def test_frozen_metrics_and_filter_constraints(self):
         run=json.loads(Path('results/vietnamese/run.json').read_text())
         for path,digest in run['input_hashes'].items():
-            actual=recorded_input_path(Path.cwd(),Path('results/vietnamese'),path,digest)
-            self.assertEqual(hashlib.sha256(actual.read_bytes()).hexdigest(),digest)
+            self.assertTrue(verify_recorded_input(Path.cwd(),path,digest))
         traces=[json.loads(line) for line in Path('results/vietnamese/traces.jsonl').read_text().splitlines()]
         self.assertEqual(len(traces),80)
         self.assertEqual(summarize(traces),json.loads(Path('results/vietnamese/metrics.json').read_text()))

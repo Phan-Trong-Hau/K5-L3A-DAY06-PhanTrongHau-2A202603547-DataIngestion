@@ -1,0 +1,138 @@
+{
+  "utc": "2026-11-13T12:11:10.763507+00:00",
+  "status": "PASS",
+  "file_count": 105,
+  "checks": [
+    {
+      "name": "files",
+      "status": "PASS",
+      "detail": {
+        "files": 105,
+        "bytes": 16042705,
+        "by_extension": {
+          "(no extension)": 2,
+          ".md": 10,
+          ".csv": 5,
+          ".json": 44,
+          ".txt": 4,
+          ".pdf": 3,
+          ".jsonl": 4,
+          ".py": 29,
+          ".js": 1,
+          ".html": 1,
+          ".css": 1,
+          ".cjs": 1
+        },
+        "scope": "All tracked+untracked non-ignored submission files, including raw PDF/text, results and dotfiles. Excludes Git internals, .venv, vector databases, OCR/model caches and audit outputs."
+      }
+    },
+    {
+      "name": "manifests",
+      "status": "PASS",
+      "detail": "Both current manifests match required schema; bundled source paths exist, are relative and match SHA-256."
+    },
+    {
+      "name": "corpus",
+      "status": "PASS",
+      "detail": {
+        "alice_units": 82,
+        "alice_min_characters": 1501,
+        "vietnamese_physical_pages": 39,
+        "vietnamese_regulation_pages": 28,
+        "note": "Primary Alice corpus meets >=30 rule; VI is supplemental and not claimed as 39 full content pages."
+      }
+    },
+    {
+      "name": "benchmarks",
+      "status": "PASS",
+      "detail": {
+        "questions": {
+          "benchmark/questions.json": 20,
+          "benchmark/extension_holdout.json": 10,
+          "benchmark/vietnamese_questions.json": 20,
+          "benchmark/multidoc_questions.json": 45
+        },
+        "total": 95,
+        "main_split": "15 dev / 5 test",
+        "note": "Evidence verified against current stored source text; semantic/human confirmation remains separate."
+      }
+    },
+    {
+      "name": "traces_and_metrics",
+      "status": "PASS",
+      "detail": {
+        "traces": 525,
+        "top3_records": 1575,
+        "metrics": "All recomputed exactly",
+        "provenance": "Every returned chunk maps to its source page and normalized offsets"
+      }
+    },
+    {
+      "name": "recorded_inputs",
+      "status": "PASS",
+      "detail": {
+        "checked": 29,
+        "packaging_provenance": "results/provenance.json",
+        "note": "Question/gold/filter/text/score data unchanged; metadata-only packaging recorded separately. Original run timestamps retained."
+      }
+    },
+    {
+      "name": "content_reviews",
+      "status": "PASS",
+      "detail": {
+        "records": {
+          "results/coherence_review.csv": 30,
+          "results/grounding_review.csv": 15,
+          "results/metadata_audit.csv": 45
+        },
+        "total": 90
+      }
+    },
+    {
+      "name": "multi_document_split",
+      "status": "PASS",
+      "detail": {
+        "sources": 5,
+        "pages_units": 230,
+        "new_questions": 45,
+        "dev": 15,
+        "test": 30
+      }
+    },
+    {
+      "name": "documentation_links",
+      "status": "PASS",
+      "detail": {
+        "local_links_checked": 17
+      }
+    },
+    {
+      "name": "secrets_and_exclusions",
+      "status": "PASS",
+      "detail": "No matching populated API-secret assignments; runtime caches excluded and PDF included. Pattern scan is not a guarantee of all possible secret formats."
+    },
+    {
+      "name": "ui_static",
+      "status": "PASS",
+      "detail": "JS syntax and unique HTML IDs checked; visual browser QA not available in current environment."
+    }
+  ],
+  "unit_tests": {
+    "status": "PASS",
+    "tests": 12,
+    "command": ".venv/bin/python -m unittest discover -s tests -v"
+  },
+  "ui_api": {
+    "status": "PASS",
+    "port": 18763,
+    "checks": [
+      "saved and live A/B/C/D",
+      "Vietnamese source PDF checksum",
+      "multi-document C/D/E/F/G traces and metrics",
+      "nd69/nd42 PDF checksums",
+      "five-source page routes",
+      "Node VM render smoke"
+    ],
+    "limitation": "No visual browser layout check available"
+  }
+}

@@ -31,8 +31,21 @@ function element(selector) {
   const pdfBytes=Buffer.from(await pdfResponse.arrayBuffer());
   assert.equal(require('node:crypto').createHash('sha256').update(pdfBytes).digest('hex'),summary.vietnamese.manifest.sha256);
 
+  assert.equal(summary.multidoc.questions.length,65);
+  assert.equal(summary.multidoc.metrics['G/test'].hit3.hits,19);
+  const mdRows=await get('/api/multidoc/traces?id=m4201');
+  assert.deepEqual(mdRows.map(r=>r.strategy),['C','D','E','F','G']);
+  for(const source of ['nd69','nd42']) {
+    assert((await get('/api/page?id=1&document='+source)).text.length>0);
+    const response=await fetch(base+'/source/'+source+'.pdf');assert.equal(response.status,200);
+    const manifest=JSON.parse(fs.readFileSync('data/multidoc/'+source+'_manifest.json','utf8'));
+    assert.equal(require('node:crypto').createHash('sha256').update(Buffer.from(await response.arrayBuffer())).digest('hex'),manifest.sha256);
+  }
+  assert((await get('/api/page?id=1&document=sherlock')).text.length>0);
+
   const context=vm.createContext({console,fetch:(path,options)=>fetch(base+path,options),
     document:{querySelector:element,querySelectorAll:()=>[],createElement:()=>({})},
+    mdRows,mdQuestion:summary.multidoc.questions.find(q=>q.id==='m4201'),
     viRows,viQuestion:summary.vietnamese.questions.find(q=>q.id==='vi10'),
     savedRows:rows,savedQuestion:summary.questions.find(q=>q.id==='q17')});
   await vm.runInContext(fs.readFileSync('starter/ui/app.js','utf8'),context);
@@ -50,6 +63,11 @@ function element(selector) {
   assert.match(element('#vi-results-grid').innerHTML,/Trang PDF/);
   assert.match(element('#vi-result-mode').textContent,/EXTERNAL TEST/);
 
+  vm.runInContext("render(mdRows,mdQuestion,'md')",context);
+  assert.equal((element('#md-results-grid').innerHTML.match(/class="strategy-column /g)||[]).length,5);
+  assert.match(element('#md-results-grid').innerHTML,/RRF|rrf/);
+  assert.match(element('#md-metrics').innerHTML,/19\/30/);
+
   const query={question:'What did the cook claim tarts were mostly made of?',strategy:'all',chapter:''};
   const response=await fetch(base+'/api/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(query)});
   assert.equal(response.status,200);
@@ -61,5 +79,5 @@ function element(selector) {
   assert.equal(filteredResponse.status,200);
   const filtered=await filteredResponse.json();
   assert(filtered.results[0].hits.every(h=>h.metadata.chapter==='XI'));
-  console.log('PASS: A/B/C/D saved/live, Vietnamese traces/metrics/source PDF hash/render labels, new holdout, score labels, D chapter filter; render smoke only (no visual browser).');
+  console.log('PASS: A/B/C/D saved/live, Vietnamese traces/metrics/source PDF hash/render labels, multi-document C/D/E/F/G metrics/traces/render, all source routes and PDF hashes, new holdout, score labels, D chapter filter; render smoke only (no visual browser).');
 })().catch(error=>{console.error(error);process.exitCode=1;});

@@ -1,0 +1,109 @@
+{
+  "purpose": "Submission packaging: omit repetitive authorship/workflow metadata and duplicate snapshots; preserve scientific content and original run timestamps/hashes.",
+  "files": {
+    "data/multidoc/manifest.json": {
+      "previous_sha256": [
+        "c84a309f287201f121df195d65097c3e1371282ca27f7cc2cf4345e719496388"
+      ],
+      "current_sha256": "53c6f8fea006cad5f882b5404f5c2fdfc12db8f61b54851deecc474cd9bbb4ae",
+      "scientific_sha256": "3005ffac63e9dee4ecdb319bb4a538e54f139dc364b950e759a01f03207b9e03"
+    },
+    "data/sources.json": {
+      "previous_sha256": [
+        "75d2f5a4730be6185f3d2ef7456ffba117bd12768678d29b0bf5cff6c7fb9f3f"
+      ],
+      "current_sha256": "7efc29c383b822d79622c6efd0878488e95368dad5675a50ee326317f9b5fa0a",
+      "scientific_sha256": "13ad8832205a4300620ad079d2d0a0201b707718ddc3e4b7ea857faedc5051f2"
+    },
+    "data/vietnamese/manifest.json": {
+      "previous_sha256": [
+        "c847e5da45f80a7add4a4dcd05cc5097df38c438ffa4514783eb3fffabe5fa81",
+        "d639625222a8fcdba63b08f0cb8d60e617a28ad7cf637db6f204660aaf61750b"
+      ],
+      "current_sha256": "ea359b3853e95ca25e6c38150b776591830cdd61758d86aa40ce9d96a1da7ec6",
+      "scientific_sha256": "ee477ce4722e8ee9a03a0e611334b1c4c0faf6ea382afecbe754101df50f354c"
+    },
+    "benchmark/protocol.json": {
+      "previous_sha256": [
+        "0809d1d92481bbc9dfd79f33826b7a890b4a075a4a731fea465bb0fb94128a44"
+      ],
+      "current_sha256": "c61bb59a5ca84c76b18a199b27050c5e6ede3e86a8779eb6cae9c3d90ec05624",
+      "scientific_sha256": "31abab0fe20aaea48243444fbbb8a72dd7161b046102a17e28c4aa9dd241601e"
+    },
+    "benchmark/vietnamese_protocol.json": {
+      "previous_sha256": [
+        "8187bb68295f9ca221bf5341e898297330498e80a6f85f25f627613ce1d1f996"
+      ],
+      "current_sha256": "8aaeef2cebc5329462a61f97d4a677b69788e7a46d062e7d0dc1c3d868dfb150",
+      "scientific_sha256": "5dbdff40ad6c49ec86902b9c59c47a871d57aaae50e386d54c4c32f210f8b956"
+    },
+    "benchmark/multidoc_questions.json": {
+      "previous_sha256": [
+        "47f4e04321dcf9ebeb0ceffe57b717e283587ddbc12bf4ba04f940ce815a2fa8"
+      ],
+      "current_sha256": "f3c2148c352842f50d47983c770dc7dfee3c883c2a62cc049eed89bba312f1fb",
+      "scientific_sha256": "4a21c07a374089f769c59c4a2c855d4c2bbae30e075891287585a383b2e2d28e"
+    },
+    "benchmark/vietnamese_questions.json": {
+      "previous_sha256": [
+        "92a996a1c0f5750d8bcbb5f1cb25c0201f4585a1a4982c8701acdb881df85c0b"
+      ],
+      "current_sha256": "a7b4fd12d6bfa03e0e8bbf0d40c49142cf6b9b8a9c20d9820d52bb6254814515",
+      "scientific_sha256": "0e8718861317726bd62fe67e844e06b8badc9ea79111ed004836908c90ffae16"
+    },
+    "benchmark/multidoc_protocol.json": {
+      "previous_sha256": [
+        "afe22abbd062b6c9f8adcea030f2a9337e1f561317fc0d26615d4afc19c56df9"
+      ],
+      "current_sha256": "a6d4c3a577a0d6278fcda6886533569ed9f8ccb592f5f49fd61932744073cc44",
+      "scientific_sha256": "af8ec4cf5536be3c94182fc0ec264f2a64180389d795e231cdb5effde8ffc6ed"
+    },
+    "results/multidoc/traces.jsonl": {
+      "previous_sha256": [
+        "4a0b865328cf902b5f6744b24c7f46494d387fb7df4c4bce4c5826e8e33b76c1"
+      ],
+      "current_sha256": "9277a83c49166aa33f6944bbe1acdd05ac5f0d2cd185624f93f77ff914875456",
+      "scientific_sha256": "9857ec554c4a0bf139fe15b2376e4150250fa6ae2e2fcb707800a8dc8ad1bfe4"
+    },
+    "results/multidoc/run.json": {
+      "previous_sha256": [
+        "b3ea46a962f1f9de5d5cbb66d658fed3acbd2c2bb9bbe711935f182c91b11a3d"
+      ],
+      "current_sha256": "25ed1db0ea038bedcd09b6607d94fed30071f02c2defd1da23d3c88218ac7c19",
+      "scientific_sha256": "c00e37d1d00e9db0cef225e524d7b42af9ad4b5daa719279e6598da76ca2f42c"
+    },
+    "results/multidoc/freeze.json": {
+      "previous_sha256": [
+        "b5847c0e73019edac9017fd1a91156956de62ed4e310c84038f10fd0301b9500"
+      ],
+      "current_sha256": "252856782f60c002cb14eefc39b7ab4613fa87bbe57cd816b13c4a2b5725f62d",
+      "scientific_sha256": "fcd5df0c8ed8f035e37c542a5cbeeb8f3320eb2c74ace04700277dc0a7b4b79d"
+    },
+    "results/vietnamese/traces.jsonl": {
+      "previous_sha256": [
+        "3a7475d3eff0ab8ba71c90c5afd43413238f26175b9bb95ec656958bc6b674b4"
+      ],
+      "current_sha256": "2129f18e0dff95d77427b713d26094f70c86023c613a2650cbb419dacf1b3c43",
+      "scientific_sha256": "0cfaa6c6ccd2fce612cf179c0fe98ac0008162bbe4f43344e80379ee14b0f524"
+    },
+    "results/vietnamese/run.json": {
+      "previous_sha256": [
+        "391e5c856b4550ada64c647b159ca34a523425dfa612b8ec4f063618a90b7e00"
+      ],
+      "current_sha256": "fc0fd7db432f315151b99a7b41a8af21faa8618a3882e359de2742da971c0555",
+      "scientific_sha256": "458559a6780c858da3fb9b4ee3ef4e2d14ced447af3e606ab885283644f04e98"
+    }
+  },
+  "retired_non_experimental": {
+    "results/review_acceptance.json": {
+      "sha256": "81570b4d042e540af06626e5db49f15aba9356c713e6e0d0ee648ccc92f34206",
+      "reason": "Non-experimental workflow metadata removed from submission; never used for embedding, retrieval or metric computation."
+    }
+  },
+  "virtual_inputs": {
+    "data/multidoc/pages.json": {
+      "loader": "starter.src.corpus.composed_bytes",
+      "sha256": "1e3023766e717a3ed5df9bd9b8ff2b0481e9f26b35c59f95bf86a7ebe74d3dd4"
+    }
+  }
+}

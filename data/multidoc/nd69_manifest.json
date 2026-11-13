@@ -1,0 +1,165 @@
+{
+  "source_id": "nd69",
+  "title": "Nghị định 69/2024/NĐ-CP — Định danh và xác thực điện tử (snapshot 2024)",
+  "source_path_or_url": "https://vanban.chinhphu.vn/?pageid=27160&docid=210491",
+  "download_url": "https://datafiles.chinhphu.vn/cpp/files/vbpq/2024/6/69-cp.signed.pdf",
+  "local_path": "data/multidoc/raw/nd69.pdf",
+  "license_or_permission": "Official legal instrument downloaded for educational retrieval benchmark; attribution retained to Cục Thông tin và Truyền thông Chính phủ / chinhphu.vn as required by source page. No separate CC license claimed.",
+  "accessed_at": "2026-11-13T11:39:12.486772+00:00",
+  "source_version": "Original signed 2024 snapshot; no claim about current legal validity",
+  "sha256": "04f6714d2bba9196dae93e72522f5fdc0a441902713255556f7c66d79e8c7919",
+  "physical_pages": 37,
+  "count_rule": "All physical pages indexed as distractors; this supplemental experiment does not claim every physical page is a full qualifying content page.",
+  "normalized_path": "data/multidoc/nd69_pages.json",
+  "normalized_sha256": "4f8882444c1940478c3e76e1b40e1b5ced5fc353738188ff1e9950375b6c9df0",
+  "pages": [
+    {
+      "page": 1,
+      "characters": 1958
+    },
+    {
+      "page": 2,
+      "characters": 2522
+    },
+    {
+      "page": 3,
+      "characters": 1702
+    },
+    {
+      "page": 4,
+      "characters": 1824
+    },
+    {
+      "page": 5,
+      "characters": 2642
+    },
+    {
+      "page": 6,
+      "characters": 2517
+    },
+    {
+      "page": 7,
+      "characters": 2383
+    },
+    {
+      "page": 8,
+      "characters": 2296
+    },
+    {
+      "page": 9,
+      "characters": 2347
+    },
+    {
+      "page": 10,
+      "characters": 2336
+    },
+    {
+      "page": 11,
+      "characters": 2657
+    },
+    {
+      "page": 12,
+      "characters": 2290
+    },
+    {
+      "page": 13,
+      "characters": 2581
+    },
+    {
+      "page": 14,
+      "characters": 2372
+    },
+    {
+      "page": 15,
+      "characters": 1889
+    },
+    {
+      "page": 16,
+      "characters": 2347
+    },
+    {
+      "page": 17,
+      "characters": 2422
+    },
+    {
+      "page": 18,
+      "characters": 2244
+    },
+    {
+      "page": 19,
+      "characters": 2208
+    },
+    {
+      "page": 20,
+      "characters": 2528
+    },
+    {
+      "page": 21,
+      "characters": 2116
+    },
+    {
+      "page": 22,
+      "characters": 2140
+    },
+    {
+      "page": 23,
+      "characters": 2353
+    },
+    {
+      "page": 24,
+      "characters": 2134
+    },
+    {
+      "page": 25,
+      "characters": 2659
+    },
+    {
+      "page": 26,
+      "characters": 1300
+    },
+    {
+      "page": 27,
+      "characters": 741
+    },
+    {
+      "page": 28,
+      "characters": 1413
+    },
+    {
+      "page": 29,
+      "characters": 1610
+    },
+    {
+      "page": 30,
+      "characters": 1572
+    },
+    {
+      "page": 31,
+      "characters": 696
+    },
+    {
+      "page": 32,
+      "characters": 892
+    },
+    {
+      "page": 33,
+      "characters": 1563
+    },
+    {
+      "page": 34,
+      "characters": 1400
+    },
+    {
+      "page": 35,
+      "characters": 1678
+    },
+    {
+      "page": 36,
+      "characters": 1274
+    },
+    {
+      "page": 37,
+      "characters": 1050
+    }
+  ]
+}

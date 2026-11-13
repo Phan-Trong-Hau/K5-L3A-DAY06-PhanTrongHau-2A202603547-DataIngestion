@@ -1,0 +1,36 @@
+{
+  "sources": [
+    {
+      "source_id": "nd69",
+      "manifest": "data/multidoc/nd69_manifest.json"
+    },
+    {
+      "source_id": "nd42",
+      "manifest": "data/multidoc/nd42_manifest.json"
+    },
+    {
+      "source_id": "sherlock",
+      "manifest": "data/multidoc/sherlock_manifest.json"
+    }
+  ],
+  "reused_sources": [
+    {
+      "source_id": "alice",
+      "manifest": "data/manifest.json"
+    },
+    {
+      "source_id": "nd13",
+      "manifest": "data/vietnamese/manifest.json"
+    }
+  ],
+  "source_count": 5,
+  "normalized_sha256": "1e3023766e717a3ed5df9bd9b8ff2b0481e9f26b35c59f95bf86a7ebe74d3dd4",
+  "normalized_sources": [
+    "data/multidoc/nd69_pages.json",
+    "data/multidoc/nd42_pages.json",
+    "data/multidoc/sherlock_pages.json",
+    "data/pages.json",
+    "data/vietnamese/pages.json"
+  ],
+  "composition": "starter.src.corpus.load_multidoc_pages; sources in the above order; composed JSON hash retained without storing duplicate text"
+}

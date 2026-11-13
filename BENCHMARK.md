@@ -20,4 +20,4 @@ Mỗi câu ghi: `id`, `split`, `question`, `expected_answer`, `gold_source_id`, 
 
 Trước khi chạy, kiểm chứng evidence tồn tại ở nguồn và đủ hỗ trợ đáp án, kể cả điều kiện/ngoại lệ. Nếu nhiều nguồn hoặc trang hợp lệ, ghi tất cả và chấp nhận một trong số đó. Không đưa đáp án hoặc gold source vào query/filter; giá trị filter phải được người dùng hoặc ngữ cảnh cung cấp **trước khi truy xuất**. Với câu không có filter, cấu hình C chạy không filter cho câu đó và ghi rõ. Không dùng câu không có đáp án trong nguồn cho chỉ số bắt buộc.
 
-Filter cần dựa vào metadata đáng tin, ví dụ `year`, `section`, `category`, `audience`, `language` hoặc `version`. Chọn corpus có ít nhất hai phạm vi phân biệt được; không tạo giá trị giả để filter đạt điểm. Xem [data/format-example.json](data/format-example.json) để tham khảo cấu trúc, không phải benchmark hoàn chỉnh.
+Filter cần dựa vào metadata đáng tin, ví dụ `year`, `section`, `category`, `audience`, `language` hoặc `version`. Chọn corpus có ít nhất hai phạm vi phân biệt được; không tạo giá trị giả để filter đạt điểm. Bộ câu hỏi thực tế và cấu trúc gold của bài làm: [benchmark/questions.json](benchmark/questions.json).

@@ -35,6 +35,53 @@
       "results": [
         "results/vietnamese/metrics.json"
       ]
+    },
+    {
+      "source_id": "nd69",
+      "language": "vi",
+      "role": "multidoc_extension",
+      "manifest": "data/multidoc/nd69_manifest.json",
+      "raw": "data/multidoc/raw/nd69.pdf",
+      "normalized": "data/multidoc/nd69_pages.json",
+      "benchmark": [
+        "benchmark/multidoc_questions.json"
+      ],
+      "results": [
+        "results/multidoc/metrics.json"
+      ]
+    },
+    {
+      "source_id": "nd42",
+      "language": "vi",
+      "role": "multidoc_extension",
+      "manifest": "data/multidoc/nd42_manifest.json",
+      "raw": "data/multidoc/raw/nd42.pdf",
+      "normalized": "data/multidoc/nd42_pages.json",
+      "benchmark": [
+        "benchmark/multidoc_questions.json"
+      ],
+      "results": [
+        "results/multidoc/metrics.json"
+      ]
+    },
+    {
+      "source_id": "sherlock",
+      "language": "en",
+      "role": "multidoc_extension",
+      "manifest": "data/multidoc/sherlock_manifest.json",
+      "raw": "data/multidoc/raw/sherlock.txt",
+      "normalized": "data/multidoc/sherlock_pages.json",
+      "benchmark": [
+        "benchmark/multidoc_questions.json"
+      ],
+      "results": [
+        "results/multidoc/metrics.json"
+      ]
     }
-  ]
+  ],
+  "multi_document_corpus": {
+    "manifest": "data/multidoc/manifest.json",
+    "source_count": 5,
+    "loader": "starter.src.corpus.load_multidoc_pages"
+  }
 }

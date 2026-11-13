@@ -1,0 +1,336 @@
+{
+  "source_id": "sherlock",
+  "title": "The Adventures of Sherlock Holmes — stories I–II",
+  "source_path_or_url": "https://www.gutenberg.org/ebooks/1661",
+  "download_url": "https://www.gutenberg.org/ebooks/1661.txt.utf-8",
+  "local_path": "data/multidoc/raw/sherlock.txt",
+  "license_or_permission": "Project Gutenberg declares public domain in USA; complete original text and Gutenberg license retained.",
+  "accessed_at": "2026-11-13T11:39:20.950651+00:00",
+  "source_version": "Gutenberg #1661 last updated 2023-10-10; first two stories selected before retrieval",
+  "sha256": "1deebafc9f459a2182e4802155d6594545359907fcc587f96fda93bfe549969c",
+  "physical_pages": null,
+  "content_units": 53,
+  "count_rule": "Consecutive normalized paragraphs >=1500 chars, final short remainder merged backwards, within stories I–II; remaining book excluded by predeclared scope.",
+  "normalized_path": "data/multidoc/sherlock_pages.json",
+  "normalized_sha256": "c3b0fbc6c966e5be771302219b71ddc3512272a6b76cc33cb40214e312cc7099",
+  "pages": [
+    {
+      "page": 1,
+      "characters": 2453,
+      "chapter": "I",
+      "chapter_start": 0
+    },
+    {
+      "page": 2,
+      "characters": 1630,
+      "chapter": "I",
+      "chapter_start": 2455
+    },
+    {
+      "page": 3,
+      "characters": 1848,
+      "chapter": "I",
+      "chapter_start": 4087
+    },
+    {
+      "page": 4,
+      "characters": 1704,
+      "chapter": "I",
+      "chapter_start": 5937
+    },
+    {
+      "page": 5,
+      "characters": 1807,
+      "chapter": "I",
+      "chapter_start": 7643
+    },
+    {
+      "page": 6,
+      "characters": 2032,
+      "chapter": "I",
+      "chapter_start": 9452
+    },
+    {
+      "page": 7,
+      "characters": 1729,
+      "chapter": "I",
+      "chapter_start": 11486
+    },
+    {
+      "page": 8,
+      "characters": 1620,
+      "chapter": "I",
+      "chapter_start": 13217
+    },
+    {
+      "page": 9,
+      "characters": 1503,
+      "chapter": "I",
+      "chapter_start": 14839
+    },
+    {
+      "page": 10,
+      "characters": 1625,
+      "chapter": "I",
+      "chapter_start": 16344
+    },
+    {
+      "page": 11,
+      "characters": 2167,
+      "chapter": "I",
+      "chapter_start": 17971
+    },
+    {
+      "page": 12,
+      "characters": 1782,
+      "chapter": "I",
+      "chapter_start": 20140
+    },
+    {
+      "page": 13,
+      "characters": 2013,
+      "chapter": "I",
+      "chapter_start": 21924
+    },
+    {
+      "page": 14,
+      "characters": 1531,
+      "chapter": "I",
+      "chapter_start": 23939
+    },
+    {
+      "page": 15,
+      "characters": 2169,
+      "chapter": "I",
+      "chapter_start": 25472
+    },
+    {
+      "page": 16,
+      "characters": 1600,
+      "chapter": "I",
+      "chapter_start": 27643
+    },
+    {
+      "page": 17,
+      "characters": 1874,
+      "chapter": "I",
+      "chapter_start": 29245
+    },
+    {
+      "page": 18,
+      "characters": 1511,
+      "chapter": "I",
+      "chapter_start": 31121
+    },
+    {
+      "page": 19,
+      "characters": 2170,
+      "chapter": "I",
+      "chapter_start": 32634
+    },
+    {
+      "page": 20,
+      "characters": 2332,
+      "chapter": "I",
+      "chapter_start": 34806
+    },
+    {
+      "page": 21,
+      "characters": 2309,
+      "chapter": "I",
+      "chapter_start": 37140
+    },
+    {
+      "page": 22,
+      "characters": 1557,
+      "chapter": "I",
+      "chapter_start": 39451
+    },
+    {
+      "page": 23,
+      "characters": 1965,
+      "chapter": "I",
+      "chapter_start": 41010
+    },
+    {
+      "page": 24,
+      "characters": 1604,
+      "chapter": "I",
+      "chapter_start": 42977
+    },
+    {
+      "page": 25,
+      "characters": 1793,
+      "chapter": "I",
+      "chapter_start": 44583
+    },
+    {
+      "page": 26,
+      "characters": 1675,
+      "chapter": "II",
+      "chapter_start": 0
+    },
+    {
+      "page": 27,
+      "characters": 1879,
+      "chapter": "II",
+      "chapter_start": 1677
+    },
+    {
+      "page": 28,
+      "characters": 1522,
+      "chapter": "II",
+      "chapter_start": 3558
+    },
+    {
+      "page": 29,
+      "characters": 1927,
+      "chapter": "II",
+      "chapter_start": 5082
+    },
+    {
+      "page": 30,
+      "characters": 1640,
+      "chapter": "II",
+      "chapter_start": 7011
+    },
+    {
+      "page": 31,
+      "characters": 1612,
+      "chapter": "II",
+      "chapter_start": 8653
+    },
+    {
+      "page": 32,
+      "characters": 1827,
+      "chapter": "II",
+      "chapter_start": 10267
+    },
+    {
+      "page": 33,
+      "characters": 1589,
+      "chapter": "II",
+      "chapter_start": 12096
+    },
+    {
+      "page": 34,
+      "characters": 1942,
+      "chapter": "II",
+      "chapter_start": 13687
+    },
+    {
+      "page": 35,
+      "characters": 1509,
+      "chapter": "II",
+      "chapter_start": 15631
+    },
+    {
+      "page": 36,
+      "characters": 1818,
+      "chapter": "II",
+      "chapter_start": 17142
+    },
+    {
+      "page": 37,
+      "characters": 1624,
+      "chapter": "II",
+      "chapter_start": 18962
+    },
+    {
+      "page": 38,
+      "characters": 1580,
+      "chapter": "II",
+      "chapter_start": 20588
+    },
+    {
+      "page": 39,
+      "characters": 1645,
+      "chapter": "II",
+      "chapter_start": 22170
+    },
+    {
+      "page": 40,
+      "characters": 1742,
+      "chapter": "II",
+      "chapter_start": 23817
+    },
+    {
+      "page": 41,
+      "characters": 2223,
+      "chapter": "II",
+      "chapter_start": 25561
+    },
+    {
+      "page": 42,
+      "characters": 1575,
+      "chapter": "II",
+      "chapter_start": 27786
+    },
+    {
+      "page": 43,
+      "characters": 2084,
+      "chapter": "II",
+      "chapter_start": 29363
+    },
+    {
+      "page": 44,
+      "characters": 1691,
+      "chapter": "II",
+      "chapter_start": 31449
+    },
+    {
+      "page": 45,
+      "characters": 1501,
+      "chapter": "II",
+      "chapter_start": 33142
+    },
+    {
+      "page": 46,
+      "characters": 1724,
+      "chapter": "II",
+      "chapter_start": 34645
+    },
+    {
+      "page": 47,
+      "characters": 1606,
+      "chapter": "II",
+      "chapter_start": 36371
+    },
+    {
+      "page": 48,
+      "characters": 1570,
+      "chapter": "II",
+      "chapter_start": 37979
+    },
+    {
+      "page": 49,
+      "characters": 1562,
+      "chapter": "II",
+      "chapter_start": 39551
+    },
+    {
+      "page": 50,
+      "characters": 1906,
+      "chapter": "II",
+      "chapter_start": 41115
+    },
+    {
+      "page": 51,
+      "characters": 1609,
+      "chapter": "II",
+      "chapter_start": 43023
+    },
+    {
+      "page": 52,
+      "characters": 1703,
+      "chapter": "II",
+      "chapter_start": 44634
+    },
+    {
+      "page": 53,
+      "characters": 2882,
+      "chapter": "II",
+      "chapter_start": 46339
+    }
+  ]
+}

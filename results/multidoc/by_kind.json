@@ -1,0 +1,1014 @@
+{
+  "cross_language": {
+    "C/dev": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "D/dev": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "E/dev": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "F/dev": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "G/dev": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "C/test": {
+      "n": 2,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "D/test": {
+      "n": 2,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "E/test": {
+      "n": 2,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "F/test": {
+      "n": 2,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "G/test": {
+      "n": 2,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    }
+  },
+  "direct": {
+    "C/dev": {
+      "n": 2,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 1,
+        "rate": 0.5
+      }
+    },
+    "D/dev": {
+      "n": 2,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "E/dev": {
+      "n": 2,
+      "hit1": {
+        "hits": 1,
+        "rate": 0.5
+      },
+      "hit3": {
+        "hits": 2,
+        "rate": 1.0
+      }
+    },
+    "F/dev": {
+      "n": 2,
+      "hit1": {
+        "hits": 2,
+        "rate": 1.0
+      },
+      "hit3": {
+        "hits": 2,
+        "rate": 1.0
+      }
+    },
+    "G/dev": {
+      "n": 2,
+      "hit1": {
+        "hits": 2,
+        "rate": 1.0
+      },
+      "hit3": {
+        "hits": 2,
+        "rate": 1.0
+      }
+    },
+    "C/test": {
+      "n": 8,
+      "hit1": {
+        "hits": 1,
+        "rate": 0.125
+      },
+      "hit3": {
+        "hits": 3,
+        "rate": 0.375
+      }
+    },
+    "D/test": {
+      "n": 8,
+      "hit1": {
+        "hits": 3,
+        "rate": 0.375
+      },
+      "hit3": {
+        "hits": 5,
+        "rate": 0.625
+      }
+    },
+    "E/test": {
+      "n": 8,
+      "hit1": {
+        "hits": 2,
+        "rate": 0.25
+      },
+      "hit3": {
+        "hits": 4,
+        "rate": 0.5
+      }
+    },
+    "F/test": {
+      "n": 8,
+      "hit1": {
+        "hits": 4,
+        "rate": 0.5
+      },
+      "hit3": {
+        "hits": 5,
+        "rate": 0.625
+      }
+    },
+    "G/test": {
+      "n": 8,
+      "hit1": {
+        "hits": 4,
+        "rate": 0.5
+      },
+      "hit3": {
+        "hits": 5,
+        "rate": 0.625
+      }
+    }
+  },
+  "condition": {
+    "C/dev": {
+      "n": 5,
+      "hit1": {
+        "hits": 2,
+        "rate": 0.4
+      },
+      "hit3": {
+        "hits": 3,
+        "rate": 0.6
+      }
+    },
+    "D/dev": {
+      "n": 5,
+      "hit1": {
+        "hits": 3,
+        "rate": 0.6
+      },
+      "hit3": {
+        "hits": 5,
+        "rate": 1.0
+      }
+    },
+    "E/dev": {
+      "n": 5,
+      "hit1": {
+        "hits": 3,
+        "rate": 0.6
+      },
+      "hit3": {
+        "hits": 3,
+        "rate": 0.6
+      }
+    },
+    "F/dev": {
+      "n": 5,
+      "hit1": {
+        "hits": 5,
+        "rate": 1.0
+      },
+      "hit3": {
+        "hits": 5,
+        "rate": 1.0
+      }
+    },
+    "G/dev": {
+      "n": 5,
+      "hit1": {
+        "hits": 5,
+        "rate": 1.0
+      },
+      "hit3": {
+        "hits": 5,
+        "rate": 1.0
+      }
+    },
+    "C/test": {
+      "n": 4,
+      "hit1": {
+        "hits": 2,
+        "rate": 0.5
+      },
+      "hit3": {
+        "hits": 2,
+        "rate": 0.5
+      }
+    },
+    "D/test": {
+      "n": 4,
+      "hit1": {
+        "hits": 2,
+        "rate": 0.5
+      },
+      "hit3": {
+        "hits": 2,
+        "rate": 0.5
+      }
+    },
+    "E/test": {
+      "n": 4,
+      "hit1": {
+        "hits": 2,
+        "rate": 0.5
+      },
+      "hit3": {
+        "hits": 2,
+        "rate": 0.5
+      }
+    },
+    "F/test": {
+      "n": 4,
+      "hit1": {
+        "hits": 3,
+        "rate": 0.75
+      },
+      "hit3": {
+        "hits": 3,
+        "rate": 0.75
+      }
+    },
+    "G/test": {
+      "n": 4,
+      "hit1": {
+        "hits": 3,
+        "rate": 0.75
+      },
+      "hit3": {
+        "hits": 3,
+        "rate": 0.75
+      }
+    }
+  },
+  "negation": {
+    "C/dev": {
+      "n": 2,
+      "hit1": {
+        "hits": 1,
+        "rate": 0.5
+      },
+      "hit3": {
+        "hits": 1,
+        "rate": 0.5
+      }
+    },
+    "D/dev": {
+      "n": 2,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "E/dev": {
+      "n": 2,
+      "hit1": {
+        "hits": 1,
+        "rate": 0.5
+      },
+      "hit3": {
+        "hits": 1,
+        "rate": 0.5
+      }
+    },
+    "F/dev": {
+      "n": 2,
+      "hit1": {
+        "hits": 1,
+        "rate": 0.5
+      },
+      "hit3": {
+        "hits": 1,
+        "rate": 0.5
+      }
+    },
+    "G/dev": {
+      "n": 2,
+      "hit1": {
+        "hits": 1,
+        "rate": 0.5
+      },
+      "hit3": {
+        "hits": 1,
+        "rate": 0.5
+      }
+    },
+    "C/test": {
+      "n": 2,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "D/test": {
+      "n": 2,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 1,
+        "rate": 0.5
+      }
+    },
+    "E/test": {
+      "n": 2,
+      "hit1": {
+        "hits": 1,
+        "rate": 0.5
+      },
+      "hit3": {
+        "hits": 1,
+        "rate": 0.5
+      }
+    },
+    "F/test": {
+      "n": 2,
+      "hit1": {
+        "hits": 1,
+        "rate": 0.5
+      },
+      "hit3": {
+        "hits": 1,
+        "rate": 0.5
+      }
+    },
+    "G/test": {
+      "n": 2,
+      "hit1": {
+        "hits": 1,
+        "rate": 0.5
+      },
+      "hit3": {
+        "hits": 2,
+        "rate": 1.0
+      }
+    }
+  },
+  "metadata": {
+    "C/dev": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 1,
+        "rate": 1.0
+      }
+    },
+    "D/dev": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 1,
+        "rate": 1.0
+      }
+    },
+    "E/dev": {
+      "n": 1,
+      "hit1": {
+        "hits": 1,
+        "rate": 1.0
+      },
+      "hit3": {
+        "hits": 1,
+        "rate": 1.0
+      }
+    },
+    "F/dev": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "G/dev": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "C/test": {
+      "n": 2,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 1,
+        "rate": 0.5
+      }
+    },
+    "D/test": {
+      "n": 2,
+      "hit1": {
+        "hits": 1,
+        "rate": 0.5
+      },
+      "hit3": {
+        "hits": 1,
+        "rate": 0.5
+      }
+    },
+    "E/test": {
+      "n": 2,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 1,
+        "rate": 0.5
+      }
+    },
+    "F/test": {
+      "n": 2,
+      "hit1": {
+        "hits": 1,
+        "rate": 0.5
+      },
+      "hit3": {
+        "hits": 1,
+        "rate": 0.5
+      }
+    },
+    "G/test": {
+      "n": 2,
+      "hit1": {
+        "hits": 1,
+        "rate": 0.5
+      },
+      "hit3": {
+        "hits": 1,
+        "rate": 0.5
+      }
+    }
+  },
+  "exception": {
+    "C/dev": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "D/dev": {
+      "n": 1,
+      "hit1": {
+        "hits": 1,
+        "rate": 1.0
+      },
+      "hit3": {
+        "hits": 1,
+        "rate": 1.0
+      }
+    },
+    "E/dev": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "F/dev": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "G/dev": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    }
+  },
+  "two_facts": {
+    "C/dev": {
+      "n": 2,
+      "hit1": {
+        "hits": 1,
+        "rate": 0.5
+      },
+      "hit3": {
+        "hits": 2,
+        "rate": 1.0
+      }
+    },
+    "D/dev": {
+      "n": 2,
+      "hit1": {
+        "hits": 2,
+        "rate": 1.0
+      },
+      "hit3": {
+        "hits": 2,
+        "rate": 1.0
+      }
+    },
+    "E/dev": {
+      "n": 2,
+      "hit1": {
+        "hits": 2,
+        "rate": 1.0
+      },
+      "hit3": {
+        "hits": 2,
+        "rate": 1.0
+      }
+    },
+    "F/dev": {
+      "n": 2,
+      "hit1": {
+        "hits": 2,
+        "rate": 1.0
+      },
+      "hit3": {
+        "hits": 2,
+        "rate": 1.0
+      }
+    },
+    "G/dev": {
+      "n": 2,
+      "hit1": {
+        "hits": 2,
+        "rate": 1.0
+      },
+      "hit3": {
+        "hits": 2,
+        "rate": 1.0
+      }
+    },
+    "C/test": {
+      "n": 3,
+      "hit1": {
+        "hits": 2,
+        "rate": 0.6666666666666666
+      },
+      "hit3": {
+        "hits": 3,
+        "rate": 1.0
+      }
+    },
+    "D/test": {
+      "n": 3,
+      "hit1": {
+        "hits": 2,
+        "rate": 0.6666666666666666
+      },
+      "hit3": {
+        "hits": 2,
+        "rate": 0.6666666666666666
+      }
+    },
+    "E/test": {
+      "n": 3,
+      "hit1": {
+        "hits": 2,
+        "rate": 0.6666666666666666
+      },
+      "hit3": {
+        "hits": 2,
+        "rate": 0.6666666666666666
+      }
+    },
+    "F/test": {
+      "n": 3,
+      "hit1": {
+        "hits": 2,
+        "rate": 0.6666666666666666
+      },
+      "hit3": {
+        "hits": 2,
+        "rate": 0.6666666666666666
+      }
+    },
+    "G/test": {
+      "n": 3,
+      "hit1": {
+        "hits": 2,
+        "rate": 0.6666666666666666
+      },
+      "hit3": {
+        "hits": 2,
+        "rate": 0.6666666666666666
+      }
+    }
+  },
+  "paraphrase": {
+    "C/dev": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "D/dev": {
+      "n": 1,
+      "hit1": {
+        "hits": 1,
+        "rate": 1.0
+      },
+      "hit3": {
+        "hits": 1,
+        "rate": 1.0
+      }
+    },
+    "E/dev": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "F/dev": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "G/dev": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 1,
+        "rate": 1.0
+      }
+    },
+    "C/test": {
+      "n": 7,
+      "hit1": {
+        "hits": 3,
+        "rate": 0.42857142857142855
+      },
+      "hit3": {
+        "hits": 3,
+        "rate": 0.42857142857142855
+      }
+    },
+    "D/test": {
+      "n": 7,
+      "hit1": {
+        "hits": 3,
+        "rate": 0.42857142857142855
+      },
+      "hit3": {
+        "hits": 6,
+        "rate": 0.8571428571428571
+      }
+    },
+    "E/test": {
+      "n": 7,
+      "hit1": {
+        "hits": 3,
+        "rate": 0.42857142857142855
+      },
+      "hit3": {
+        "hits": 5,
+        "rate": 0.7142857142857143
+      }
+    },
+    "F/test": {
+      "n": 7,
+      "hit1": {
+        "hits": 3,
+        "rate": 0.42857142857142855
+      },
+      "hit3": {
+        "hits": 4,
+        "rate": 0.5714285714285714
+      }
+    },
+    "G/test": {
+      "n": 7,
+      "hit1": {
+        "hits": 5,
+        "rate": 0.7142857142857143
+      },
+      "hit3": {
+        "hits": 5,
+        "rate": 0.7142857142857143
+      }
+    }
+  },
+  "comparison": {
+    "C/test": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "D/test": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 1,
+        "rate": 1.0
+      }
+    },
+    "E/test": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "F/test": {
+      "n": 1,
+      "hit1": {
+        "hits": 1,
+        "rate": 1.0
+      },
+      "hit3": {
+        "hits": 1,
+        "rate": 1.0
+      }
+    },
+    "G/test": {
+      "n": 1,
+      "hit1": {
+        "hits": 1,
+        "rate": 1.0
+      },
+      "hit3": {
+        "hits": 1,
+        "rate": 1.0
+      }
+    }
+  },
+  "contrast": {
+    "C/test": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "D/test": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "E/test": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "F/test": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    },
+    "G/test": {
+      "n": 1,
+      "hit1": {
+        "hits": 0,
+        "rate": 0.0
+      },
+      "hit3": {
+        "hits": 0,
+        "rate": 0.0
+      }
+    }
+  },
+  "old_vi_diagnostic": {
+    "C/diagnostic": {
+      "n": 20,
+      "hit1": {
+        "hits": 4,
+        "rate": 0.2
+      },
+      "hit3": {
+        "hits": 7,
+        "rate": 0.35
+      }
+    },
+    "D/diagnostic": {
+      "n": 20,
+      "hit1": {
+        "hits": 11,
+        "rate": 0.55
+      },
+      "hit3": {
+        "hits": 15,
+        "rate": 0.75
+      }
+    },
+    "E/diagnostic": {
+      "n": 20,
+      "hit1": {
+        "hits": 11,
+        "rate": 0.55
+      },
+      "hit3": {
+        "hits": 14,
+        "rate": 0.7
+      }
+    },
+    "F/diagnostic": {
+      "n": 20,
+      "hit1": {
+        "hits": 14,
+        "rate": 0.7
+      },
+      "hit3": {
+        "hits": 16,
+        "rate": 0.8
+      }
+    },
+    "G/diagnostic": {
+      "n": 20,
+      "hit1": {
+        "hits": 14,
+        "rate": 0.7
+      },
+      "hit3": {
+        "hits": 18,
+        "rate": 0.9
+      }
+    }
+  }
+}

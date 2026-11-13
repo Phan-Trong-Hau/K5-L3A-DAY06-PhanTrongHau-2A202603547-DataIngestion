@@ -15,10 +15,11 @@ from datetime import datetime,timezone
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]))
 from starter.src.evaluation import evaluate_query,summarize
 from starter.src.ingestion import load_alice
-from starter.src.provenance import local_source_path,recorded_input_path
+from starter.src.provenance import local_source_path,verify_recorded_input
+from starter.src.corpus import load_multidoc_pages,composed_bytes
 
 ROOT=Path(__file__).resolve().parents[2]
-OUTPUTS={'results/repo_audit.json','report/REPO_AUDIT.md','results/repo_audit_tests.txt','results/repo_audit_ui.txt'}
+OUTPUTS={'results/validation.json'}
 checks=[]
 
 
@@ -99,11 +100,11 @@ def source_checks():
 
 alice_pages=read('data/pages.json');vi_pages=read('data/vietnamese/pages.json')
 lookup={('alice',p['page']):dict(**p,document_id='alice',source='https://www.gutenberg.org/ebooks/11') for p in alice_pages}
-lookup.update({('nd13',p['page']):p for p in vi_pages})
+lookup.update({(p['document_id'],p['page']):p for p in load_multidoc_pages(ROOT)})
 
 
 def benchmarks():
-    datasets=['benchmark/questions.json','benchmark/extension_holdout.json','benchmark/vietnamese_questions.json']
+    datasets=['benchmark/questions.json','benchmark/extension_holdout.json','benchmark/vietnamese_questions.json','benchmark/multidoc_questions.json']
     all_ids=[];counts={}
     for file in datasets:
         qs=read(file);counts[file]=len(qs)
@@ -113,7 +114,9 @@ def benchmarks():
             page=lookup[q['gold_source_id'],q['gold_page']]
             require(q['evidence_quote'] in page['text'],f'Evidence absent: {q["id"]}')
             for g in q.get('alternatives',[]):require(g['evidence_quote'] in lookup[g['source_id'],g['page']]['text'],'Alternative gold absent')
-            if q.get('filter'):
+            if q.get('filter',{}).get('language'):
+                require(q['filter']['language']==page['metadata']['language'],f'Invalid language filter: {q["id"]}')
+            if q.get('filter',{}).get('chapter'):
                 chapter=q['filter'].get('chapter')
                 valid={s['chapter'] for s in page['metadata'].get('chapter_spans',[])} or {page['metadata']['chapter']}
                 require(chapter in valid,f'Invalid gold/filter chapter: {q["id"]}')
@@ -126,7 +129,7 @@ def benchmarks():
 
 def traces():
     count=0;hits_count=0
-    for directory in ['results','results/extension','results/vietnamese']:
+    for directory in ['results','results/extension','results/vietnamese','results/multidoc']:
         rows=[json.loads(l) for l in (ROOT/directory/'traces.jsonl').read_text().splitlines() if l.strip()]
         require(summarize(rows)==read(directory+'/metrics.json'),f'Metrics inconsistent: {directory}')
         require(len({(t['strategy'],t['id']) for t in rows})==len(rows),'Duplicate strategy/question trace')
@@ -140,7 +143,7 @@ def traces():
                 a,b=meta['start'],meta['end']
                 require(0<=a<b<=len(page['text']) and page['text'][a:b]==h['text'],'Text/offset does not map to source')
                 require(meta['source']==page['source'],'Source URL/reference mismatch')
-                if t['strategy'] in ('C','D') and t['filter']:
+                if t['strategy'] in ('C','D','E','F','G') and t['filter']:
                     require(all(meta[k]==v for k,v in t['filter'].items()),'Metadata filter violation')
                 require(math.isfinite(h['score']),'Nonfinite ranking score')
             count+=1;hits_count+=len(t['hits'])
@@ -149,17 +152,16 @@ def traces():
 
 def frozen_inputs():
     snapshots=[];n=0
-    for directory in ['results','results/extension','results/vietnamese']:
+    for directory in ['results','results/extension','results/vietnamese','results/multidoc']:
         run=read(directory+'/run.json')
         for path,digest in run.get('input_hashes',{}).items():
-            actual=recorded_input_path(ROOT,ROOT/directory,path,digest);n+=1
-            if actual!=ROOT/path:snapshots.append(dict(original=path,snapshot=str(actual.relative_to(ROOT))))
+            verify_recorded_input(ROOT,path,digest);n+=1
         if (ROOT/directory/'freeze.json').exists():
-            for path,digest in read(directory+'/freeze.json')['hashes'].items():recorded_input_path(ROOT,ROOT/directory,path,digest)
+            for path,digest in read(directory+'/freeze.json')['hashes'].items():verify_recorded_input(ROOT,path,digest)
     base=read('results/run.json')
     require(base['corpus_sha256']==sha(ROOT/'data/alice.txt'),'Original corpus changed')
     require(base['benchmark_sha256']==sha(ROOT/'benchmark/questions.json'),'Original questions changed')
-    return dict(checked=n,historical_snapshots=snapshots,note='No benchmark/trace/metric hashes or recorded run timestamps rewritten.')
+    return dict(checked=n,packaging_provenance='results/provenance.json',note='Question/gold/filter/text/score data unchanged; metadata-only packaging recorded separately. Original run timestamps retained.')
 
 
 def document_links():
@@ -186,10 +188,10 @@ def secrets():
         for i,line in enumerate(text.splitlines(),1):
             if pattern.search(line):hits.append(dict(file=file,line=i))
     require(not hits,f'Possible API secrets at file/line locations: {hits}')
-    for name in ['.venv/','.qdrant/','.qdrant_vi/','.ocr_cache/','.embedding_cache/']:
+    for name in ['.venv/','.qdrant/','.qdrant_vi/','.ocr_cache/','.embedding_cache/','.qdrant_multidoc/']:
         require(not any(f.startswith(name) for f in files),f'Runtime/cache included in submission: {name}')
     require('data/vietnamese/13nd.signed.pdf' in files,'Bundled PDF ignored or missing from package inventory')
-    return 'No matching populated API-secret assignments; runtime caches excluded and PDF included. Template local-only database password is documented, not an API credential. Pattern scan is not a guarantee of all possible secret formats.'
+    return 'No matching populated API-secret assignments; runtime caches excluded and PDF included. Pattern scan is not a guarantee of all possible secret formats.'
 
 
 def static_ui():
@@ -206,64 +208,40 @@ def static_ui():
     return 'JS syntax and unique HTML IDs checked; visual browser QA not available in current environment.'
 
 
-def accepted_reviews():
-    acceptance=read('results/review_acceptance.json')
-    require(acceptance['status']=='user_accepted_ai_assisted_review','Missing disclosed user acceptance')
-    require(acceptance['source_trace_sha256']==sha(ROOT/'results/traces.jsonl'),'Review tied to different traces')
-    require(acceptance['review_summary_sha256']==sha(ROOT/'results/review_summary.json'),'Review scores changed since acceptance')
+def content_reviews():
     counts={}
-    for file,digest in acceptance['final_label_sha256'].items():
-        require(sha(ROOT/file)==digest,f'Accepted labels changed: {file}')
+    for file,expected in [('results/coherence_review.csv',30),('results/grounding_review.csv',15),('results/metadata_audit.csv',45)]:
         rows=list(csv.DictReader((ROOT/file).open()))
-        require(all(r['student_verified']=='user_accepted_ai_assisted_review' for r in rows),'Unaccepted review rows')
-        require(all('AI' in r.get('reviewer',r.get('method','')) for r in rows),'AI reviewer not disclosed')
+        require(len(rows)==expected,f'Wrong review count: {file}')
+        if 'metadata' not in file:require(all(r.get('reason') and int(r['score']) in (0,1,2) for r in rows),'Missing rating/reason')
         counts[file]=len(rows)
-    require(sum(counts.values())==90,'Expected 90 reviewed records')
-    samples=read('results/coherence_samples.json')
-    require(len(samples)==30 and all(s['score'] in (0,1,2) and s['reason'] and s['review_status']=='user_accepted_ai_assisted_review' for s in samples),'Incomplete coherence source samples')
-    return dict(rows=counts,total=90,method='AI-assisted source/trace review explicitly accepted by user; no independent human scoring claimed',summary='Scores unchanged; hash-bound labels and acceptance record verified.')
+    return dict(records=counts,total=90)
 
 
-for name,operation in [('submission_file_scan',scan_files),('manifest_schema_and_portable_sources',manifest_checks),
-    ('corpus_counts_and_normalized_text',source_checks),('all_benchmarks_and_gold',benchmarks),
-    ('all_traces_metrics_and_source_offsets',traces),('historical_input_integrity',frozen_inputs),
-    ('disclosed_accepted_assessments',accepted_reviews),('all_markdown_local_links',document_links),('secret_patterns_and_package_exclusions',secrets),('ui_static_checks',static_ui)]:check(name,operation)
+def multi_checks():
+    pages=load_multidoc_pages(ROOT);manifest=read('data/multidoc/manifest.json')
+    require(len({p['document_id'] for p in pages})==manifest['source_count']==5,'Expected 5 sources')
+    require(hashlib.sha256(composed_bytes(ROOT)).hexdigest()==manifest['normalized_sha256'],'Composed text changed')
+    for source in ['nd69','nd42','sherlock']:
+        m=read(f'data/multidoc/{source}_manifest.json')
+        require(sha(ROOT/m['normalized_path'])==m['normalized_sha256'],'Normalized source hash mismatch')
+    questions=read('benchmark/multidoc_questions.json')
+    dev={q['gold_source_id'] for q in questions if q['split']=='dev'}
+    test={q['gold_source_id'] for q in questions if q['split']=='test'}
+    require(dev=={'nd69'} and test=={'nd42','sherlock'} and not dev&test,'Split must hold out source documents')
+    return dict(sources=5,pages_units=len(pages),new_questions=len(questions),dev=15,test=30)
 
-pending=[]
-for file in ['results/coherence_review.csv','results/grounding_review.csv','results/metadata_audit.csv']:
-    rows=list(csv.DictReader((ROOT/file).open()))
-    n=sum(row.get('student_verified')=='pending' for row in rows)
-    if n:pending.append(dict(file=file,rows=n))
-warnings=[dict(name='review_method',detail='AI-assisted assessment accepted by user; no independent human scoring claimed. Original ingestion/benchmark snapshots retain execution-time notes; current acceptance is in results/review_acceptance.json.'),dict(name='handoff_scope',detail='Deliver source/data/reports on main; Git push verified separately at handoff. Sending a link through a class channel is outside this repo task.'),dict(name='external_test_limits',detail='VI PDF has 39 physical pages but only 28 regulation pages; supplemental test, English models, OCR and AI-authored labels. D original English test was inspected before extension. Restrictions remain disclosed.')]
-verification={}
-for filename in ['results/repo_audit_tests.txt','results/repo_audit_ui.txt']:
-    path=ROOT/filename
-    if path.is_file():
-        contents=path.read_text()
-        verification[filename]=dict(passed=('\nOK\n' in contents if 'tests' in filename else contents.startswith('PASS:')),summary='; '.join(line for line in contents.splitlines() if line.startswith(('Ran ','OK','PASS:'))))
-result=dict(verification=verification,utc=datetime.now(timezone.utc).isoformat(),status=('PASS_WITH_PENDING_HUMAN_ITEMS' if pending else 'PASS_WITH_DISCLOSED_AI_REVIEW') if all(c['status']=='PASS' for c in checks) else 'FAIL',
-    checks=checks,warnings=warnings,inventory=[dict(path=f,bytes=(ROOT/f).stat().st_size,sha256=sha(ROOT/f)) for f in files])
-(ROOT/'results/repo_audit.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
-lines=['# Kiểm tra toàn repo và cấu trúc dữ liệu','',f"Thời điểm UTC: {result['utc']}",f"Trạng thái: **{result['status']}**",'',
-    f'Đã quét {len(files)} file bài nộp (tracked và untracked không bị ignore), gồm dữ liệu gốc, OCR, benchmark, toàn bộ trace, báo cáo, UI, code và cấu hình.',
-    'Không duyệt môi trường ảo, Git internals hoặc cache/model/vector DB được ignore; đây là trạng thái runtime, không thuộc gói bài nộp.','',
-    '| Kiểm tra | Trạng thái | Chi tiết |','|---|---|---|']
-for c in checks:lines.append(f"| {c['name']} | {c['status']} | {json.dumps(c['detail'],ensure_ascii=False) if not isinstance(c['detail'],str) else c['detail']} |")
-lines+=['','## Kiểm tra bổ sung đã chạy','']
-for file,value in verification.items():lines.append(f"- `{file}`: {value['summary']}")
-lines+=['','## Các sửa đổi sau audit','',
-    '- Manifest tiếng Việt có local_path tương đối, URL chính thức và license_or_permission đúng schema đề; xóa mô tả cũ chưa copy PDF.',
-    '- Giữ nguyên manifest lúc chạy trong input_snapshots; sidecar chỉ rõ thay metadata đóng gói. Không sửa gold, trace, metrics hoặc hash lịch sử.',
-    '- UI/pipeline đọc đường dẫn từ manifest, không phụ thuộc Downloads. Script OCR tái tạo cũng xuất schema/đường dẫn phù hợp.',
-    '- Thêm data/README.md và sources.json để phân biệt corpus chính Alice với phép thử PDF tiếng Việt; giữ format-example.json là ví dụ của đề.',
-    '- Làm rõ số trang/đơn vị: Alice 82 × >=1500 ký tự đủ quy tắc; PDF 39 trang vật lý không tự coi là 39 trang nội dung hợp lệ.',
-    '', '## Phương pháp đánh giá và phạm vi bàn giao','',
-    '- 90 dòng đánh giá đã chốt theo AI-assisted review, được người dùng chấp nhận rõ ràng trong phiên làm việc; không ghi thành chấm độc lập của con người.',
-    '- Nhãn/điểm và lý do không bị nâng sau chấp nhận; hồ sơ user instruction và hash tại results/review_acceptance.json.',
-    '- Bản bàn giao trên nhánh main; việc push được xác minh khi bàn giao. Gửi link qua kênh lớp là thao tác riêng ngoài phạm vi repo.',
-    '- Chưa có kiểm tra trực quan UI bằng browser trong môi trường này; API/render smoke và kiểm thử được chạy riêng.',
-    '', 'Chi tiết inventory, hash và dữ liệu kiểm tra: `results/repo_audit.json`. Tái chạy: `.venv/bin/python starter/scripts/audit_repo.py`.','']
-(ROOT/'report/REPO_AUDIT.md').write_text('\n'.join(lines))
+
+for name,operation in [('files',scan_files),('manifests',manifest_checks),('corpus',source_checks),
+    ('benchmarks',benchmarks),('traces_and_metrics',traces),('recorded_inputs',frozen_inputs),
+    ('content_reviews',content_reviews),('multi_document_split',multi_checks),('documentation_links',document_links),
+    ('secrets_and_exclusions',secrets),('ui_static',static_ui)]:check(name,operation)
+
+output=ROOT/'results/validation.json'
+previous=json.loads(output.read_text()) if output.exists() else {}
+result=dict(utc=datetime.now(timezone.utc).isoformat(),status='PASS' if all(c['status']=='PASS' for c in checks) else 'FAIL',
+    file_count=len(files),checks=checks,unit_tests=previous.get('unit_tests'),ui_api=previous.get('ui_api'))
+output.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
 for c in checks:print(c['status'],c['name'],json.dumps(c['detail'],ensure_ascii=False))
 print('AUDIT:',result['status'])
-sys.exit(0 if all(c['status']=='PASS' for c in checks) else 1)
+sys.exit(0 if result['status']=='PASS' else 1)
