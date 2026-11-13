@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Knowledge Lab · Data Ingestion Demo</title>
+<link rel="stylesheet" href="/style.css">
+<script src="/app.js" defer></script>
+</head>
+<body>
+<aside class="sidebar">
+  <a href="/" class="brand"><span class="brand-icon">k<span>·</span></span><span>knowledge<span class="brand-sub">DATA INGESTION LAB</span></span></a>
+  <div class="nav-label">WORKSPACE</div>
+  <nav aria-label="Điều hướng demo">
+    <button class="nav active" data-view="explore"><span>⌕</span> Khám phá tri thức <span class="nav-number">01</span></button>
+    <button class="nav" data-view="benchmark"><span>▥</span> So sánh benchmark <span class="nav-number">02</span></button>
+    <button class="nav" data-view="vietnamese"><span>文</span> Kiểm tra tiếng Việt <span class="nav-number">03</span></button>
+    <button class="nav" data-view="pipeline"><span>◇</span> Pipeline & phương pháp <span class="nav-number">04</span></button>
+  </nav>
+  <div class="corpus-box"><span class="tiny">CORPUS ĐANG SỬ DỤNG</span><div class="book-icon">A<span>↗</span></div><h3>Alice’s Adventures<br>in Wonderland</h3><p>Lewis Carroll · English · 1865</p><div class="corpus-footer"><span>82 đơn vị nguồn</span><span>12 chương</span></div></div>
+  <div class="sidebar-bottom"><span class="avatar">PH</span><div>Phan Trọng Hậu<small>2A202603547 · L3A · Day 06</small></div></div>
+</aside>
+<main>
+  <header class="topbar"><span>Workspace <span class="slash">/</span> <strong id="breadcrumb">Khám phá tri thức</strong></span><span class="local-pill"><i></i> Local demo</span></header>
+  <div class="content">
+    <section id="explore" class="view">
+      <div class="page-heading"><div><div class="eyebrow">FROM DOCUMENTS TO KNOWLEDGE</div><h1>Một câu hỏi.<br><span>Bốn cách tìm bằng chứng.</span></h1><p>Khám phá ảnh hưởng của chunking và metadata trên cùng một kho tri thức.</p></div><div class="edition">LAB / 006<span>DATA INGESTION<br>ENGINEERING</span></div></div>
+      <div class="stats-strip"><div><span class="stat-label">NGUỒN NỘI DUNG</span><strong id="unit-count">82 <small>đơn vị</small></strong></div><div><span class="stat-label">SEMANTIC EMBEDDING</span><strong>384 <small>chiều · BGE Small</small></strong></div><div><span class="stat-label">VECTOR STORE</span><strong>Qdrant <small>· cosine</small></strong></div><div><span class="stat-label">BENCHMARK</span><strong>20 <small>câu · 15 dev / 5 test</small></strong></div></div>
+      <div class="search-panel">
+        <div class="panel-head"><h2>Đặt câu hỏi cho tài liệu</h2><span class="tag">SEMANTIC SEARCH</span></div>
+        <div class="mode-tabs" role="group" aria-label="Chế độ truy xuất"><button id="live-mode" class="mode active">Truy vấn trực tiếp</button><button id="saved-mode" class="mode">Benchmark đã lưu</button></div>
+        <form id="search-form">
+          <label class="field-label" for="question">Câu hỏi <span>· Dùng tiếng Anh để khớp corpus và model</span></label>
+          <textarea id="question" rows="2" maxlength="2000" placeholder="What did the cook claim tarts were mostly made of?" required>What did the cook claim tarts were mostly made of?</textarea>
+          <div id="saved-controls" hidden><label class="field-label" for="benchmark-question">Chọn câu hỏi đã có gold evidence</label><select id="benchmark-question"></select></div>
+          <div class="search-options"><div id="live-controls" class="live-controls"><div><label for="strategy" class="field-label">Chiến lược</label><select id="strategy"><option id="compare-option" value="all">So sánh cả A / B / C</option><option value="A">A · Fixed-size</option><option value="B">B · Theo đoạn</option><option value="C">C · Theo đoạn + filter</option></select></div><div><label for="chapter" class="field-label">Phạm vi chương <span>· áp dụng C / D</span></label><select id="chapter"><option value="">Tất cả chương</option></select></div></div><button id="search-button" type="submit" class="primary">Tìm bằng chứng <span>↗</span></button></div>
+        </form>
+        <div class="suggestions"><span>THỬ DEMO</span><button data-example="q17">Khi chunk dài bỏ lỡ đáp án</button><button data-example="q13">Metadata giúp ích thế nào?</button><button data-example="q08">Đúng nguồn, thiếu evidence</button></div>
+      </div>
+      <div id="notice" role="status" aria-live="polite"></div>
+      <section id="results-section" hidden><div class="results-heading"><div><div class="eyebrow" id="result-mode">RETRIEVAL RESULTS</div><h2>Bằng chứng tìm được</h2><p id="result-query" class="muted"></p></div><span id="result-time" class="muted"></span></div><div id="gold-panel" class="gold-panel" hidden></div><div id="results-grid" class="results-grid"></div></section>
+      <div id="empty-state" class="empty-state"><div class="empty-symbol">⌕</div><h3>Đừng chỉ tìm đúng từ. Hãy tìm đủ ý.</h3><p>Mỗi kết quả giữ nội dung chunk, điểm cosine và vị trí nguồn.<br>Chọn một ví dụ để bắt đầu so sánh các chiến lược.</p></div>
+    </section>
+    <section id="benchmark" class="view" hidden>
+      <div class="page-heading"><div><div class="eyebrow">MEASURE BEFORE YOU CHOOSE</div><h1>Chọn bằng dữ liệu.</h1><p>Cùng corpus, cùng model, cùng câu hỏi. Thay đổi cách chuẩn bị dữ liệu.</p></div><span class="big-chip">C <small>CHỌN TRÊN DEV</small></span></div>
+      <div class="callout">C được chọn bằng dev trước khi chạy test. D là cấu hình bổ sung sau khi đã xem test gốc; điểm test của D chỉ để phân tích lỗi. Dùng 10 câu mới bên dưới để kiểm tra thêm, không coi kết quả là bảo đảm tổng quát.</div>
+      <div class="panel"><div class="panel-head"><h2>Evidence Hit@3</h2><span class="tag">KẾT QUẢ ĐÃ LƯU</span></div><div id="benchmark-bars" class="benchmark-bars"></div><div class="chart-legend"><span><i class="dev-dot"></i>Dev · 15 câu</span><span><i class="test-dot"></i>Test · 5 câu</span></div></div>
+      <div class="panel"><h2>Chỉ số truy xuất</h2><div class="table-scroll"><table><thead><tr><th>Chiến lược</th><th>Dev Hit@1</th><th>Dev Hit@3</th><th>Test Hit@1</th><th>Test Hit@3</th><th>Số chunk</th></tr></thead><tbody id="metrics-table"></tbody></table></div></div>
+      <div id="holdout-panel" class="panel" hidden><div class="panel-head"><h2>10 câu kiểm tra mới · q21–q30</h2><span class="tag">CHỐT TRƯỚC KHI CHẠY D</span></div><p>Câu hỏi mới được chốt trước lượt chạy mở rộng; vẫn cùng tác phẩm nên chưa độc lập theo corpus. Không điều chỉnh D dựa trên kết quả này.</p><table><thead><tr><th>Chiến lược</th><th>Hit@1</th><th>Evidence Hit@3</th></tr></thead><tbody id="holdout-table"></tbody></table></div><div class="two-col"><div class="panel"><div class="eyebrow">A → B</div><h2>Giữ ngữ cảnh, giảm số chunk</h2><p>Dev Hit@3 tăng 9/15 → 13/15. Số chunk giảm 350 → 192. Size và overlap cũng thay đổi, nên chưa tách riêng ảnh hưởng của ranh giới đoạn.</p><button class="text-button" data-example="q17">Xem trường hợp B bỏ lỡ evidence ↗</button></div><div class="panel"><div class="eyebrow">B → C</div><h2>Giới hạn đúng phạm vi</h2><p>Dev Hit@3 tăng 13/15 → 14/15. C giữ nguyên chunk và vector của B, chỉ thêm filter khi câu hỏi đã cung cấp chương.</p><button class="text-button" data-example="q13">Xem trường hợp filter giúp ích ↗</button></div></div>
+      <div class="footnote">Hit = đúng nguồn/đơn vị và chứa đủ toàn bộ evidence trong một chunk. Nhãn coherence và grounding trong báo cáo có AI hỗ trợ và được người dùng chấp nhận; không phải chấm độc lập; không phải độ chính xác câu trả lời LLM.</div>
+    </section>
+
+    <section id="vietnamese" class="view" hidden>
+      <div class="page-heading"><div><div class="eyebrow">NEW DOCUMENT · FROZEN EXTERNAL TEST</div><h1>Tiếng Việt. Phép thử mới.</h1><p>Nghị định 13/2023/NĐ-CP · Bản PDF scan do bạn cung cấp · Câu hỏi tiếng Việt có dấu.</p></div><span class="big-chip">VI <small>NGUỒN MỚI</small></span></div>
+      <div class="callout">Giữ nguyên model và cấu hình A/B/C/D của Alice, chốt 20 câu trước khi truy xuất. Cả embedding và reranker hiện thiên về tiếng Anh. Đây là phép thử trên nguồn mới có OCR, không chỉnh tham số sau khi xem kết quả và không phải tư vấn pháp lý hiện hành.</div>
+      <div class="panel"><div class="panel-head"><h2>Kết quả trên 20 câu mới</h2><span class="tag">KHÔNG TINH CHỈNH TRÊN TẬP NÀY</span></div><table><thead><tr><th>Chiến lược</th><th>Hit@1</th><th>Evidence Hit@3</th><th>Chunks</th></tr></thead><tbody id="vi-metrics-table"></tbody></table><p>PDF có 39 trang vật lý: 28 trang nội dung nghị định, 1 trang danh mục phụ lục, 10 trang biểu mẫu. OCR bằng Tesseract vie; không gọi đây là 39 trang nội dung đầy đủ. Có thể mở ảnh scan gốc từ cửa sổ nguồn.</p></div>
+      <div class="search-panel"><div class="panel-head"><h2>Đối chiếu câu hỏi và bằng chứng</h2><span class="tag">TRACE ĐÃ LƯU</span></div><label class="field-label" for="vi-question">Câu hỏi kiểm tra độc lập theo nguồn mới</label><select id="vi-question"></select><button id="vi-show" class="primary" style="margin-top:16px">Xem so sánh A / B / C / D ↗</button><p class="muted">Evidence giữ nguyên lỗi chính tả OCR để đánh giá trên đúng text đã được index. Codex đã đọc ảnh trang chứa evidence; phương pháp AI hỗ trợ đã được người dùng chấp nhận; có thể đối chiếu lại scan gốc. Không tự dịch câu hỏi sang tiếng Anh.</p></div>
+      <div id="vi-notice" role="status" aria-live="polite"></div>
+      <div id="vi-empty-state" class="empty-state"><h3>Chọn câu hỏi để xem kết quả trên tài liệu tiếng Việt.</h3></div>
+      <section id="vi-results-section" hidden><div class="results-heading"><div><div id="vi-result-mode" class="eyebrow"></div><h2>Bằng chứng trên PDF tiếng Việt</h2><p id="vi-result-query" class="muted"></p></div><span id="vi-result-time" class="muted"></span></div><div id="vi-gold-panel" class="gold-panel" hidden></div><div id="vi-results-grid" class="results-grid"></div></section>
+    </section>
+    <section id="pipeline" class="view" hidden>
+      <div class="page-heading"><div><div class="eyebrow">THE ENGINE BEHIND THE DEMO</div><h1>Từ tài liệu đến bằng chứng.</h1><p>Pipeline có thể tái lập, có nguồn để đối chiếu ở từng bước.</p></div></div>
+      <div class="pipeline-flow"><div><b>01</b><h3>Đọc & chuẩn hóa</h3><p>Unicode NFC<br>82 đơn vị ≥1.500 ký tự</p></div><span>→</span><div><b>02</b><h3>Chia chunk</h3><p>A: 500 / overlap 50<br>B, C: theo đoạn ≤1.000</p></div><span>→</span><div><b>03</b><h3>Embedding thật</h3><p>BGE Small EN v1.5<br>384 chiều · CPU ONNX</p></div><span>→</span><div><b>04</b><h3>Lưu & truy xuất</h3><p>Qdrant local<br>Exact cosine · top-3</p></div></div>
+      <div class="two-col"><div class="panel"><h2>Metadata theo từng chunk</h2><dl><dt>document_id / source</dt><dd>Truy về tác phẩm và URL gốc</dd><dt>page / start / end</dt><dd>Đơn vị nội dung và offset đã chuẩn hóa</dd><dt>chapter / chapter_title</dt><dd>Trích từ heading thật; dùng lọc phạm vi</dd></dl><p class="muted">“Unit” là đơn vị nguồn, không phải trang PDF hay trang in.</p></div><div class="panel"><h2>Kịch bản thuyết trình · 3 phút</h2><ol class="talk-track"><li>Giới thiệu bài toán: tìm đủ bằng chứng, giữ nguồn.</li><li>Mở q17: A tìm đúng, B/C bỏ lỡ vì ranking.</li><li>Mở q13: filter chương giúp C tìm đủ evidence.</li><li>Mở benchmark: giải thích chọn C theo dev, dù A thắng test nhỏ.</li><li>Truy vấn tự do, bấm “Xem nguồn” để chứng minh grounding.</li></ol></div></div>
+      <div class="panel"><div class="eyebrow">D · THỬ NGHIỆM BỔ SUNG SAU TEST</div><h2>Dense + BM25 → RRF → cross-encoder → top-3</h2><p>Giữ nguyên chunk B. Lấy 20 ứng viên dense và 20 BM25, hợp nhất RRF (k=60), rerank 20 ứng viên bằng ms-marco-MiniLM-L-6-v2. Filter chương áp dụng trước tìm kiếm khi có input. Điểm D là reranker logit, không phải cosine hoặc xác suất đúng.</p></div><div class="callout">Trực tiếp chạy model và tìm vector mới. Benchmark đã lưu chỉ phát lại trace đã chạy, có gold để đối chiếu. Giao diện luôn ghi rõ chế độ; không tự thay kết quả khi backend lỗi.</div>
+    </section>
+    <footer><span>KNOWLEDGE LAB <span class="slash">/</span> DAY 06</span><span>Evidence first. Every result traceable.</span></footer>
+  </div>
+</main>
+<dialog id="source-dialog"><div class="modal-head"><div><div class="eyebrow">SOURCE INSPECTOR</div><h2 id="source-title">Đơn vị nguồn</h2></div><button id="close-source" aria-label="Đóng nguồn">✕</button></div><p id="source-meta" class="muted"></p><div id="source-text"></div><a id="source-pdf" class="text-button" href="/source/nd13.pdf" target="_blank" rel="noopener" hidden>Mở trang scan gốc ↗</a><p id="source-credit" class="footnote">Nguồn: Project Gutenberg · Alice’s Adventures in Wonderland · Unit ≠ trang in.</p></dialog>
+</body>
+</html>

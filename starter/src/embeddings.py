@@ -1,29 +1,23 @@
-"""Choose a real embedding provider (API or local) and implement this contract."""
+"""CPU ONNX semantic embeddings. Provider errors propagate."""
 from typing import Protocol
 
 
 class Embedder(Protocol):
     model_name: str
     dimensions: int
-
-    def embed_documents(self, texts: list[str]) -> list[list[float]]:
-        """Return one vector per input text, in the same order."""
-        ...
-
-    def embed_query(self, question: str) -> list[float]:
-        """Return a query vector compatible with the stored document vectors."""
-        ...
+    def embed_documents(self, texts: list[str]) -> list[list[float]]: ...
+    def embed_query(self, question: str) -> list[float]: ...
 
 
 class MyEmbedder:
-    """TODO: implement a provider adapter; do not silently fall back to mock vectors."""
-
-    def __init__(self, model_name: str) -> None:
+    def __init__(self, model_name: str = 'BAAI/bge-small-en-v1.5') -> None:
+        from fastembed import TextEmbedding
         self.model_name = model_name
-        raise NotImplementedError("TODO: initialize real embedder and dimensions")
+        self.model = TextEmbedding(model_name=model_name, threads=4)
+        self.dimensions = len(next(self.model.embed(['dimension probe'])))
 
     def embed_documents(self, texts: list[str]) -> list[list[float]]:
-        raise NotImplementedError("TODO: embed_documents")
+        return [v.tolist() for v in self.model.passage_embed(texts, batch_size=32)]
 
     def embed_query(self, question: str) -> list[float]:
-        raise NotImplementedError("TODO: embed_query")
+        return next(self.model.query_embed(question)).tolist()

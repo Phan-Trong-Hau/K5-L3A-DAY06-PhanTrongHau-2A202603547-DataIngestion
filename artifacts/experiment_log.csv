@@ -1,4 +1,4 @@
 strategy,chunking,chunk_size,overlap,metadata,filter,vectorizer,hypothesis,dev_hit1,dev_hit3,test_hit1,test_hit3,notes
-A,,,,,,,,,,,,
-B,,,,,,,,,,,,
-C,,,,,,,,,,,,
+A,fixed,500,50,document_id/source/page/chapter/language,none,BAAI/bge-small-en-v1.5,A baseline; B preserve paragraphs; C constrain explicit chapter,0.3333333333333333,0.6,1.0,1.0,Frozen before retrieval; C chosen on dev; AI labels pending student review
+B,paragraph,1000,0,document_id/source/page/chapter/language,none,BAAI/bge-small-en-v1.5,A baseline; B preserve paragraphs; C constrain explicit chapter,0.6,0.8666666666666667,0.8,0.8,Frozen before retrieval; C chosen on dev; AI labels pending student review
+C,paragraph,1000,0,document_id/source/page/chapter/language,chapter when supplied,BAAI/bge-small-en-v1.5,A baseline; B preserve paragraphs; C constrain explicit chapter,0.6,0.9333333333333333,0.8,0.8,Frozen before retrieval; C chosen on dev; AI labels pending student review

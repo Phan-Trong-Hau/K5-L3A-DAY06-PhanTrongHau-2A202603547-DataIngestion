@@ -1,0 +1,18 @@
+test_preserved_baseline_and_extension_trace_contract (test_hybrid.HybridTests.test_preserved_baseline_and_extension_trace_contract) ... ok
+test_union_dedup_reranking_and_both_branch_filters (test_hybrid.HybridTests.test_union_dedup_reranking_and_both_branch_filters) ... /home/ryanphan/Workspaces/ai_action/labs/K5-L3A-DAY06-PhanTrongHau-2A202603547-DataIngestion/starter/src/store.py:34: UserWarning: Local mode performs exact (brute-force) search, so `search_params` has no effect, with the exception of `idf`.
+  points = self.client.query_points(strategy, query=query_vector, query_filter=query_filter,
+ok
+test_chunk_boundaries_and_coverage (test_pipeline.PipelineTests.test_chunk_boundaries_and_coverage) ... ok
+test_corpus_and_unicode (test_pipeline.PipelineTests.test_corpus_and_unicode) ... ok
+test_evidence_requires_complete_quote_and_correct_location (test_pipeline.PipelineTests.test_evidence_requires_complete_quote_and_correct_location) ... ok
+test_persistent_store_filter_replacement_and_cosine (test_pipeline.PipelineTests.test_persistent_store_filter_replacement_and_cosine) ... /home/ryanphan/.local/share/uv/python/cpython-3.14.9-linux-x86_64-gnu/lib/python3.14/copy.py:201: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7377ce1ef010>
+  for key, value in x.items():
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen abc>:123: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7377ce1ef010>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.064s
+
+OK

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "primary_source": "alice",
+  "sources": [
+    {
+      "source_id": "alice",
+      "language": "en",
+      "role": "primary_lab_corpus",
+      "manifest": "data/manifest.json",
+      "raw": "data/alice.txt",
+      "normalized": "data/pages.json",
+      "counted_content_units": 82,
+      "benchmark": [
+        "benchmark/questions.json",
+        "benchmark/extension_holdout.json"
+      ],
+      "results": [
+        "results/metrics.json",
+        "results/extension/metrics.json"
+      ]
+    },
+    {
+      "source_id": "nd13",
+      "language": "vi",
+      "role": "additional_external_source_test",
+      "manifest": "data/vietnamese/manifest.json",
+      "raw": "data/vietnamese/13nd.signed.pdf",
+      "normalized": "data/vietnamese/pages.json",
+      "physical_pages": 39,
+      "regulation_pages": 28,
+      "standalone_minimum_30_content_pages_claimed": false,
+      "benchmark": [
+        "benchmark/vietnamese_questions.json"
+      ],
+      "results": [
+        "results/vietnamese/metrics.json"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,230 @@
+[
+  {
+    "id": "q01",
+    "split": "dev",
+    "question": "What label was on the empty jar Alice found while falling?",
+    "expected_answer": "ORANGE MARMALADE",
+    "gold_source_id": "alice",
+    "gold_page": 2,
+    "evidence_quote": "it was labelled “ORANGE MARMALADE”, but to her great disappointment it was empty",
+    "filter": {},
+    "alternatives": []
+  },
+  {
+    "id": "q02",
+    "split": "dev",
+    "question": "Why did Alice avoid dropping the jar?",
+    "expected_answer": "She feared killing somebody below.",
+    "gold_source_id": "alice",
+    "gold_page": 2,
+    "evidence_quote": "she did not like to drop the jar for fear of killing somebody underneath",
+    "filter": {},
+    "alternatives": []
+  },
+  {
+    "id": "q03",
+    "split": "dev",
+    "question": "What did Alice check before tasting the bottle?",
+    "expected_answer": "Whether it was marked poison.",
+    "gold_source_id": "alice",
+    "gold_page": 5,
+    "evidence_quote": "“and see whether it’s marked ‘_poison_’ or not”",
+    "filter": {},
+    "alternatives": []
+  },
+  {
+    "id": "q04",
+    "split": "dev",
+    "question": "How were the words on the small cake written?",
+    "expected_answer": "EAT ME was marked in currants.",
+    "gold_source_id": "alice",
+    "gold_page": 6,
+    "evidence_quote": "the words “EAT ME” were beautifully marked in currants.",
+    "filter": {},
+    "alternatives": []
+  },
+  {
+    "id": "q05",
+    "split": "dev",
+    "question": "In chapter III, what did Alice distribute as race prizes?",
+    "expected_answer": "Comfits, one per participant.",
+    "gold_source_id": "alice",
+    "gold_page": 15,
+    "evidence_quote": "pulled out a box of comfits, (luckily the salt water had not got into it), and handed them round as prizes. There was exactly one a-piece, all round.",
+    "filter": {
+      "chapter": "III"
+    },
+    "alternatives": []
+  },
+  {
+    "id": "q06",
+    "split": "dev",
+    "question": "What prize did the Dodo present to Alice?",
+    "expected_answer": "A thimble.",
+    "gold_source_id": "alice",
+    "gold_page": 16,
+    "evidence_quote": "the Dodo solemnly presented the thimble",
+    "filter": {},
+    "alternatives": []
+  },
+  {
+    "id": "q07",
+    "split": "dev",
+    "question": "Where did Alice think the falling Rabbit might have landed?",
+    "expected_answer": "A cucumber-frame or something similar.",
+    "gold_source_id": "alice",
+    "gold_page": 21,
+    "evidence_quote": "it had fallen into a cucumber-frame, or something of the sort.",
+    "filter": {},
+    "alternatives": []
+  },
+  {
+    "id": "q08",
+    "split": "dev",
+    "question": "In chapter VI, what explanation did the Duchess give for her cat grinning?",
+    "expected_answer": "It was a Cheshire cat.",
+    "gold_source_id": "alice",
+    "gold_page": 35,
+    "evidence_quote": "“It’s a Cheshire cat,” said the Duchess, “and that’s why.",
+    "filter": {
+      "chapter": "VI"
+    },
+    "alternatives": []
+  },
+  {
+    "id": "q09",
+    "split": "dev",
+    "question": "What kind of well appears in the Dormouse story?",
+    "expected_answer": "A treacle-well.",
+    "gold_source_id": "alice",
+    "gold_page": 46,
+    "evidence_quote": "The Dormouse again took a minute or two to think about it, and then said, “It was a treacle-well.”",
+    "filter": {},
+    "alternatives": []
+  },
+  {
+    "id": "q10",
+    "split": "dev",
+    "question": "What time was it always, according to the Hatter?",
+    "expected_answer": "Six o’clock.",
+    "gold_source_id": "alice",
+    "gold_page": 45,
+    "evidence_quote": "It’s always six o’clock now.",
+    "filter": {},
+    "alternatives": []
+  },
+  {
+    "id": "q11",
+    "split": "dev",
+    "question": "Why could the tea party never wash the dishes between rounds?",
+    "expected_answer": "It was always tea-time.",
+    "gold_source_id": "alice",
+    "gold_page": 45,
+    "evidence_quote": "“it’s always tea-time, and we’ve no time to wash the things between whiles.”",
+    "filter": {},
+    "alternatives": []
+  },
+  {
+    "id": "q12",
+    "split": "dev",
+    "question": "Which living creatures served as balls and mallets in croquet?",
+    "expected_answer": "Hedgehogs and flamingoes.",
+    "gold_source_id": "alice",
+    "gold_page": 51,
+    "evidence_quote": "the balls were live hedgehogs, the mallets live flamingoes",
+    "filter": {},
+    "alternatives": []
+  },
+  {
+    "id": "q13",
+    "split": "dev",
+    "question": "In chapter IX, what were the four branches of Arithmetic?",
+    "expected_answer": "Ambition, Distraction, Uglification, Derision.",
+    "gold_source_id": "alice",
+    "gold_page": 62,
+    "evidence_quote": "the different branches of Arithmetic—Ambition, Distraction, Uglification, and Derision.",
+    "filter": {
+      "chapter": "IX"
+    },
+    "alternatives": []
+  },
+  {
+    "id": "q14",
+    "split": "dev",
+    "question": "Who taught Drawling and how often did the teacher visit?",
+    "expected_answer": "An old conger-eel, once a week.",
+    "gold_source_id": "alice",
+    "gold_page": 62,
+    "evidence_quote": "the Drawling-master was an old conger-eel, that used to come once a week",
+    "filter": {},
+    "alternatives": []
+  },
+  {
+    "id": "q15",
+    "split": "dev",
+    "question": "In the dance song, what creature was treading on the whiting’s tail?",
+    "expected_answer": "A porpoise.",
+    "gold_source_id": "alice",
+    "gold_page": 64,
+    "evidence_quote": "“There’s a porpoise close behind us, and he’s treading on my tail.",
+    "filter": {},
+    "alternatives": []
+  },
+  {
+    "id": "q16",
+    "split": "test",
+    "question": "In chapter XI, what did the Duchess’s cook carry into court?",
+    "expected_answer": "A pepper-box.",
+    "gold_source_id": "alice",
+    "gold_page": 75,
+    "evidence_quote": "The next witness was the Duchess’s cook. She carried the pepper-box in her hand",
+    "filter": {
+      "chapter": "XI"
+    },
+    "alternatives": []
+  },
+  {
+    "id": "q17",
+    "split": "test",
+    "question": "What did the cook claim tarts were mostly made of?",
+    "expected_answer": "Pepper.",
+    "gold_source_id": "alice",
+    "gold_page": 75,
+    "evidence_quote": "“What are tarts made of?”\n\n“Pepper, mostly,” said the cook.",
+    "filter": {},
+    "alternatives": []
+  },
+  {
+    "id": "q18",
+    "split": "test",
+    "question": "Under Rule Forty-two, who had to leave the court?",
+    "expected_answer": "All persons more than a mile high.",
+    "gold_source_id": "alice",
+    "gold_page": 77,
+    "evidence_quote": "Rule Forty-two. _All persons more than a mile high to leave the court_.",
+    "filter": {},
+    "alternatives": []
+  },
+  {
+    "id": "q19",
+    "split": "test",
+    "question": "Did the Queen want the verdict or the sentence first?",
+    "expected_answer": "Sentence first, verdict afterwards.",
+    "gold_source_id": "alice",
+    "gold_page": 80,
+    "evidence_quote": "“No, no!” said the Queen. “Sentence first—verdict afterwards.”",
+    "filter": {},
+    "alternatives": []
+  },
+  {
+    "id": "q20",
+    "split": "test",
+    "question": "Who was accused in the rhyme of stealing the Queen’s tarts?",
+    "expected_answer": "The Knave of Hearts.",
+    "gold_source_id": "alice",
+    "gold_page": 72,
+    "evidence_quote": "The Knave of Hearts, he stole those tarts",
+    "filter": {},
+    "alternatives": []
+  }
+]

@@ -1,0 +1,68 @@
+{
+  "D/dev": {
+    "n": 15,
+    "hit1": {
+      "hits": 12,
+      "rate": 0.8
+    },
+    "hit3": {
+      "hits": 15,
+      "rate": 1.0
+    }
+  },
+  "D/test": {
+    "n": 5,
+    "hit1": {
+      "hits": 5,
+      "rate": 1.0
+    },
+    "hit3": {
+      "hits": 5,
+      "rate": 1.0
+    }
+  },
+  "D/holdout": {
+    "n": 10,
+    "hit1": {
+      "hits": 9,
+      "rate": 0.9
+    },
+    "hit3": {
+      "hits": 10,
+      "rate": 1.0
+    }
+  },
+  "A/holdout": {
+    "n": 10,
+    "hit1": {
+      "hits": 6,
+      "rate": 0.6
+    },
+    "hit3": {
+      "hits": 10,
+      "rate": 1.0
+    }
+  },
+  "B/holdout": {
+    "n": 10,
+    "hit1": {
+      "hits": 7,
+      "rate": 0.7
+    },
+    "hit3": {
+      "hits": 9,
+      "rate": 0.9
+    }
+  },
+  "C/holdout": {
+    "n": 10,
+    "hit1": {
+      "hits": 8,
+      "rate": 0.8
+    },
+    "hit3": {
+      "hits": 10,
+      "rate": 1.0
+    }
+  }
+}

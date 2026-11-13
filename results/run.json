@@ -1,0 +1,19 @@
+{
+  "started_model": "BAAI/bge-small-en-v1.5",
+  "dimensions": 384,
+  "utc": "2026-11-13T06:36:17.612523+00:00",
+  "python": "3.14.9",
+  "versions": {
+    "fastembed": "0.9.1",
+    "qdrant-client": "1.20.0",
+    "onnxruntime": "1.31.1",
+    "numpy": "2.5.4"
+  },
+  "benchmark_sha256": "9a170ccd91bc49f61acef08dbf7a4d43c12f321bcdb03520e6d533fb293d3fd2",
+  "corpus_sha256": "01b38ea4c710a84bc18d0bd41271a5a1a92b94e97b2812f4dece97d4a694725e",
+  "total_seconds": 33.944662170999436,
+  "search": "exact cosine",
+  "provider": "FastEmbed ONNX CPU",
+  "api_cost_usd": 0,
+  "note": "Costs exclude CPU/electricity; ingest times include two snapshot writes; C reuses B embedding cache."
+}

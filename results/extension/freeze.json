@@ -1,0 +1,10 @@
+{
+  "utc": "2026-11-13T09:45:47.298629+00:00",
+  "hashes": {
+    "results/traces.jsonl": "597d7c1fe07cc6db3203303eca324716b6732485d12fb45c175a7569144dc698",
+    "results/metrics.json": "35cd0229f0d569d3ff69d6775adf5d6e3d4e60cca77debabcacd23cc1091c59c",
+    "benchmark/extension_protocol.json": "866de64ba4d571fe6a9bd6eb4c478ae1ff63f575902054b49f3194e4c7ff7261",
+    "benchmark/extension_holdout.json": "5a79b695062df4d36e42983a850f759df8f97e558b279391e47bf9e36b63b1ec"
+  },
+  "status": "pre-run; original test already inspected"
+}

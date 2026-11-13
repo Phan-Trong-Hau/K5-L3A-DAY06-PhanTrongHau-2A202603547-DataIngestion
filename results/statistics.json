@@ -1,0 +1,44 @@
+{
+  "A": {
+    "chunks": 350,
+    "characters": 156220,
+    "min_chars": 96,
+    "mean_chars": 446.34285714285716,
+    "max_chars": 500,
+    "p50_chars": 500.0,
+    "p95_chars": 500.0,
+    "ingest_seconds_including_repeat": 15.559066112000437,
+    "embedding_cache_hit": false,
+    "count_after_first": 350,
+    "count_after_repeat": 350,
+    "api_cost_usd": 0
+  },
+  "B": {
+    "chunks": 192,
+    "characters": 142600,
+    "min_chars": 79,
+    "mean_chars": 742.7083333333334,
+    "max_chars": 999,
+    "p50_chars": 756.5,
+    "p95_chars": 986.45,
+    "ingest_seconds_including_repeat": 16.835827752000114,
+    "embedding_cache_hit": false,
+    "count_after_first": 192,
+    "count_after_repeat": 192,
+    "api_cost_usd": 0
+  },
+  "C": {
+    "chunks": 192,
+    "characters": 142600,
+    "min_chars": 79,
+    "mean_chars": 742.7083333333334,
+    "max_chars": 999,
+    "p50_chars": 756.5,
+    "p95_chars": 986.45,
+    "ingest_seconds_including_repeat": 1.0322756900004606,
+    "embedding_cache_hit": true,
+    "count_after_first": 192,
+    "count_after_repeat": 192,
+    "api_cost_usd": 0
+  }
+}

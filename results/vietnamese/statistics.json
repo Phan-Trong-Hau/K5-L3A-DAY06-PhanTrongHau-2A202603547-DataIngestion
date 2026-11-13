@@ -1,0 +1,42 @@
+{
+  "A": {
+    "chunks": 154,
+    "characters": 68209,
+    "min_chars": 77,
+    "max_chars": 500,
+    "ingest_seconds_including_repeat": 9.030783201000304,
+    "embedding_cache_hit": false,
+    "count_after_first": 154,
+    "count_after_repeat": 154,
+    "api_cost_usd": 0
+  },
+  "B": {
+    "chunks": 88,
+    "characters": 62511,
+    "min_chars": 93,
+    "max_chars": 995,
+    "ingest_seconds_including_repeat": 9.813750680998055,
+    "embedding_cache_hit": false,
+    "count_after_first": 88,
+    "count_after_repeat": 88,
+    "api_cost_usd": 0
+  },
+  "C": {
+    "chunks": 88,
+    "characters": 62511,
+    "min_chars": 93,
+    "max_chars": 995,
+    "ingest_seconds_including_repeat": 0.3236529729983886,
+    "embedding_cache_hit": true,
+    "count_after_first": 88,
+    "count_after_repeat": 88,
+    "api_cost_usd": 0
+  },
+  "D": {
+    "chunks": 88,
+    "base_collection": "B",
+    "additional_embeddings": 0,
+    "reranker_load_seconds": 0.14926908200141042,
+    "api_cost_usd": 0
+  }
+}

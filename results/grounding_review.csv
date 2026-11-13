@@ -1,0 +1,16 @@
+strategy,question_id,score,reason,reviewer,student_verified
+A,q16,2,"Top-1 nêu đúng Duchess’s cook cầm pepper-box, có source/unit để đối chiếu.",Codex AI-assisted content review,user_accepted_ai_assisted_review
+A,q17,2,"Top-1 A có câu hỏi về thành phần tarts và câu cook trả lời Pepper, mostly.",Codex AI-assisted content review,user_accepted_ai_assisted_review
+A,q18,2,Top-1 giữ Rule Forty-two cùng điều kiện hơn một mile high.,Codex AI-assisted content review,user_accepted_ai_assisted_review
+A,q19,2,Top-1 giữ người nói Queen và thứ tự sentence trước verdict.,Codex AI-assisted content review,user_accepted_ai_assisted_review
+A,q20,2,Top-1 giữ bài vè gán hành vi lấy tarts cho Knave of Hearts.,Codex AI-assisted content review,user_accepted_ai_assisted_review
+B,q16,2,"Top-1 nêu đúng Duchess’s cook cầm pepper-box, có source/unit để đối chiếu.",Codex AI-assisted content review,user_accepted_ai_assisted_review
+B,q17,0,"Đã đọc cả top-3: nói mustard, suy diễn tarts và bài vè trộm bánh; không có phát biểu của cook về pepper.",Codex AI-assisted content review,user_accepted_ai_assisted_review
+B,q18,2,Top-1 giữ Rule Forty-two cùng điều kiện hơn một mile high.,Codex AI-assisted content review,user_accepted_ai_assisted_review
+B,q19,2,Top-1 giữ người nói Queen và thứ tự sentence trước verdict.,Codex AI-assisted content review,user_accepted_ai_assisted_review
+B,q20,2,Top-1 giữ bài vè gán hành vi lấy tarts cho Knave of Hearts.,Codex AI-assisted content review,user_accepted_ai_assisted_review
+C,q16,2,"Top-1 nêu đúng Duchess’s cook cầm pepper-box, có source/unit để đối chiếu.",Codex AI-assisted content review,user_accepted_ai_assisted_review
+C,q17,0,"Đã đọc cả top-3: nói mustard, suy diễn tarts và bài vè trộm bánh; không có phát biểu của cook về pepper.",Codex AI-assisted content review,user_accepted_ai_assisted_review
+C,q18,2,Top-1 giữ Rule Forty-two cùng điều kiện hơn một mile high.,Codex AI-assisted content review,user_accepted_ai_assisted_review
+C,q19,2,Top-1 giữ người nói Queen và thứ tự sentence trước verdict.,Codex AI-assisted content review,user_accepted_ai_assisted_review
+C,q20,2,Top-1 giữ bài vè gán hành vi lấy tarts cho Knave of Hearts.,Codex AI-assisted content review,user_accepted_ai_assisted_review

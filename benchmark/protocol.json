@@ -1,0 +1,16 @@
+{
+  "frozen_before_first_retrieval": true,
+  "corpus": "data/manifest.json",
+  "split": "q01-q15 dev (chapters I-X), q16-q20 test (chapters XI-XII); corpus shared, no claims of document-level independence",
+  "selection": "Maximize dev Evidence Hit@3, then dev Hit@1, then fewer chunks, then strategy name. Freeze winner before any test retrieval.",
+  "strategies": {
+    "A": {"chunking": "fixed", "size": 500, "overlap": 50, "filter": false},
+    "B": {"chunking": "paragraph", "max_size": 1000, "filter": false},
+    "C": {"chunking": "paragraph", "max_size": 1000, "filter": true}
+  },
+  "embedding": "BAAI/bge-small-en-v1.5 via FastEmbed passage_embed/query_embed, 384 dimensions",
+  "store": "Qdrant local persistent, cosine, exact search, top_k=3",
+  "coherence_sampling": "First 10 ascending source units, normalized character offset len(text)//2; review all chunks covering each position",
+  "metadata_filter": "Only chapter supplied explicitly in question; no gold source/page in filters",
+  "annotation": "AI-assisted source and trace review is disclosed separately from pending student manual review. Never substitute exact match for manual coherence/grounding."
+}

@@ -1,0 +1,4 @@
+# Raw corpus snapshots must retain byte-for-byte hashes across platforms.
+# Gutenberg includes original CRLF/trailing spaces; do not normalize or diff as code.
+data/alice.txt -text -diff
+data/vietnamese/13nd.signed.pdf -text -diff

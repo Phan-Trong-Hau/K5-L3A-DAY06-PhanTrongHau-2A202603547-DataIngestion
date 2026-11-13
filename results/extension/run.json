@@ -1,0 +1,40 @@
+{
+  "utc": "2026-11-13T09:46:18.231727+00:00",
+  "config": {
+    "strategy": "D",
+    "status": "post-hoc extension after inspecting original dev/test; original test is diagnostic, not independent",
+    "frozen_before_extension_run": true,
+    "base_collection": "B",
+    "chunking": "unchanged B paragraph chunks, max 1000 characters",
+    "embedding": "unchanged BAAI/bge-small-en-v1.5",
+    "dense_candidates": 20,
+    "lexical_candidates": 20,
+    "lexical": "BM25, k1=1.5, b=0.75; Unicode words lowercased, English stopword removal; document frequencies over full B corpus; filters applied before ranking",
+    "fusion": "equal-weight reciprocal rank fusion, k=60",
+    "rerank_candidates": 20,
+    "reranker": "Xenova/ms-marco-MiniLM-L-6-v2 via FastEmbed TextCrossEncoder, CPU, raw logit descending",
+    "top_k": 3,
+    "filter": "chapter supplied by question only; same rule as C",
+    "selection": "One predeclared D config; no sweep or parameter changes based on original test or extension holdout",
+    "fresh_holdout": "benchmark/extension_holdout.json, q21-q30 authored and evidence-verified before D retrieval; same book, not independent corpus",
+    "metrics": "same strict single-chunk source/unit/full-evidence Hit@1 and Hit@3 as original benchmark",
+    "reference": "https://qdrant.tech/documentation/fastembed/fastembed-rerankers/"
+  },
+  "input_hashes": {
+    "results/traces.jsonl": "597d7c1fe07cc6db3203303eca324716b6732485d12fb45c175a7569144dc698",
+    "results/metrics.json": "35cd0229f0d569d3ff69d6775adf5d6e3d4e60cca77debabcacd23cc1091c59c",
+    "benchmark/extension_protocol.json": "866de64ba4d571fe6a9bd6eb4c478ae1ff63f575902054b49f3194e4c7ff7261",
+    "benchmark/extension_holdout.json": "5a79b695062df4d36e42983a850f759df8f97e558b279391e47bf9e36b63b1ec"
+  },
+  "reranker_load_seconds": 0.11783779100005631,
+  "total_seconds": 30.933023451001645,
+  "d_mean_query_seconds": 1.012491545966259,
+  "candidate_document_count": 192,
+  "versions": {
+    "fastembed": "0.9.1",
+    "onnxruntime": "1.31.1",
+    "qdrant-client": "1.20.0"
+  },
+  "api_cost_usd": 0,
+  "note": "Baseline A/B/C artifacts untouched. Original test diagnostic after inspection; fresh holdout same corpus, small sample. No human coherence/grounding labels generated for D."
+}

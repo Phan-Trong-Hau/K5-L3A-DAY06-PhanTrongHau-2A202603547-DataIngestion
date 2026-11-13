@@ -1,0 +1,15 @@
+{
+  "utc": "2026-11-13T09:58:40.086353+00:00",
+  "hashes": {
+    "data/vietnamese/pages.json": "706170a1d56f0f17e407a4c44027fe7341d8ca6a7ca2f8e1233b310ca3509093",
+    "data/vietnamese/manifest.json": "d639625222a8fcdba63b08f0cb8d60e617a28ad7cf637db6f204660aaf61750b",
+    "benchmark/vietnamese_questions.json": "92a996a1c0f5750d8bcbb5f1cb25c0201f4585a1a4982c8701acdb881df85c0b",
+    "benchmark/vietnamese_protocol.json": "8187bb68295f9ca221bf5341e898297330498e80a6f85f25f627613ce1d1f996",
+    "benchmark/extension_protocol.json": "866de64ba4d571fe6a9bd6eb4c478ae1ff63f575902054b49f3194e4c7ff7261",
+    "results/traces.jsonl": "597d7c1fe07cc6db3203303eca324716b6732485d12fb45c175a7569144dc698",
+    "results/metrics.json": "35cd0229f0d569d3ff69d6775adf5d6e3d4e60cca77debabcacd23cc1091c59c",
+    "results/extension/metrics.json": "fc4f74a6c6d2edd7183ca5d3e46cc864b50066defaf75d2649fe5bad10072efb",
+    "results/extension/traces.jsonl": "40a98b1dc16c1eb162ce0beff52dfb158ce93d2914a8b96429652c55ba9d1b23"
+  },
+  "note": "New source test; A/B/C/D frozen before first retrieval; no model or parameter selection here"
+}

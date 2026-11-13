@@ -1,28 +1,39 @@
-"""TODO: store and search vectors using PostgreSQL + pgvector."""
-from typing import Any
-from .models import Chunk
+"""Persistent Qdrant local store; exact cosine retrieval with payload filters."""
+import uuid
+from dataclasses import asdict
+from qdrant_client import QdrantClient, models
 
 
-class PgVectorStore:
-    def __init__(self, database_url: str, dimensions: int) -> None:
-        """TODO: retain connection settings; validate model dimensions."""
-        raise NotImplementedError("TODO: initialize store")
+class QdrantStore:
+    def __init__(self, path: str, dimensions: int):
+        self.client = QdrantClient(path=path)
+        self.dimensions = dimensions
 
-    def create_schema(self) -> None:
-        """TODO: create table with vector column and source/page/filter metadata."""
-        raise NotImplementedError("TODO: create_schema")
+    def upsert(self, strategy, chunks, vectors):
+        if len(chunks) != len(vectors) or any(len(v) != self.dimensions for v in vectors):
+            raise ValueError('Chunk/vector count or dimensions mismatch')
+        # Full snapshot replacement removes obsolete chunks on corpus/config changes.
+        if self.client.collection_exists(strategy):
+            self.client.delete_collection(strategy)
+        self.client.create_collection(strategy, vectors_config=models.VectorParams(size=self.dimensions, distance=models.Distance.COSINE))
+        points = []
+        for c, v in zip(chunks, vectors):
+            payload = asdict(c)
+            payload['metadata'] = {**c.metadata, 'document_id': c.document_id, 'source': c.source, 'page': c.page}
+            points.append(models.PointStruct(id=str(uuid.uuid5(uuid.NAMESPACE_URL, c.chunk_id)), vector=v, payload=payload))
+        for start in range(0, len(points), 128):
+            self.client.upsert(strategy, points[start:start+128], wait=True)
 
-    def upsert(self, strategy: str, chunks: list[Chunk], vectors: list[list[float]]) -> None:
-        """TODO: validate lengths/dimensions and write stable IDs without duplicates.
+    def search(self, strategy, query_vector, top_k=3, filters=None):
+        if len(query_vector) != self.dimensions or top_k <= 0:
+            raise ValueError('Invalid query dimensions/top_k')
+        if filters and set(filters)-{'chapter', 'language'}:
+            raise ValueError('Unsupported filter field')
+        query_filter = models.Filter(must=[models.FieldCondition(key=f'metadata.{k}', match=models.MatchValue(value=v))
+            for k, v in filters.items()]) if filters else None
+        points = self.client.query_points(strategy, query=query_vector, query_filter=query_filter,
+            limit=top_k, search_params=models.SearchParams(exact=True)).points
+        return [{**p.payload, 'score': p.score} for p in points]
 
-        When re-ingesting changed source documents, remove obsolete chunks too.
-        """
-        raise NotImplementedError("TODO: upsert")
-
-    def search(self, strategy: str, query_vector: list[float], top_k: int = 3,
-               filters: dict[str, Any] | None = None) -> list[dict[str, Any]]:
-        """TODO: filter permitted metadata in SQL, rank by cosine distance, return top-k.
-
-        Return chunk ID, text, score and metadata. Parameterize user-supplied values.
-        """
-        raise NotImplementedError("TODO: search")
+    def close(self):
+        self.client.close()

@@ -1,0 +1,118 @@
+[
+  {
+    "id": "q21",
+    "split": "holdout",
+    "question": "In chapter II, which two objects did the White Rabbit carry when he returned?",
+    "expected_answer": "White kid gloves and a large fan.",
+    "gold_source_id": "alice",
+    "gold_page": 8,
+    "evidence_quote": "with a pair of white kid gloves in one hand and a large fan in the other",
+    "filter": {
+      "chapter": "II"
+    },
+    "alternatives": []
+  },
+  {
+    "id": "q22",
+    "split": "holdout",
+    "question": "Which part of the Cheshire Cat remained after the rest had disappeared?",
+    "expected_answer": "The grin.",
+    "gold_source_id": "alice",
+    "gold_page": 40,
+    "evidence_quote": "ending with the grin, which remained some time after the rest of it had gone.",
+    "filter": {},
+    "alternatives": []
+  },
+  {
+    "id": "q23",
+    "split": "holdout",
+    "question": "How far off was the Hatter’s watch?",
+    "expected_answer": "Two days wrong.",
+    "gold_source_id": "alice",
+    "gold_page": 42,
+    "evidence_quote": "“Two days wrong!” sighed the Hatter.",
+    "filter": {},
+    "alternatives": []
+  },
+  {
+    "id": "q24",
+    "split": "holdout",
+    "question": "What kind of butter did the March Hare claim he had used?",
+    "expected_answer": "The best butter.",
+    "gold_source_id": "alice",
+    "gold_page": 42,
+    "evidence_quote": "“It was the _best_ butter,” the March Hare meekly replied.",
+    "filter": {},
+    "alternatives": []
+  },
+  {
+    "id": "q25",
+    "split": "holdout",
+    "question": "In chapter IX, why was the schoolmaster called Tortoise?",
+    "expected_answer": "Because he taught them.",
+    "gold_source_id": "alice",
+    "gold_page": 61,
+    "evidence_quote": "“We called him Tortoise because he taught us,” said the Mock Turtle",
+    "filter": {
+      "chapter": "IX"
+    },
+    "alternatives": []
+  },
+  {
+    "id": "q26",
+    "split": "holdout",
+    "question": "Why did the Gryphon say the classes were called lessons?",
+    "expected_answer": "Because they lessen from day to day.",
+    "gold_source_id": "alice",
+    "gold_page": 62,
+    "evidence_quote": "“That’s the reason they’re called lessons,” the Gryphon remarked: “because they lessen from day to day.”",
+    "filter": {},
+    "alternatives": []
+  },
+  {
+    "id": "q27",
+    "split": "holdout",
+    "question": "What were the names of the three sisters in the Dormouse story?",
+    "expected_answer": "Elsie, Lacie, and Tillie.",
+    "gold_source_id": "alice",
+    "gold_page": 45,
+    "evidence_quote": "their names were Elsie, Lacie, and Tillie",
+    "filter": {},
+    "alternatives": []
+  },
+  {
+    "id": "q28",
+    "split": "holdout",
+    "question": "In chapter XI, why did the jurors write their own names?",
+    "expected_answer": "For fear of forgetting them before the trial ended.",
+    "gold_source_id": "alice",
+    "gold_page": 71,
+    "evidence_quote": "“They’re putting down their names,” the Gryphon whispered in reply, “for fear they should forget them before the end of the trial.”",
+    "filter": {
+      "chapter": "XI"
+    },
+    "alternatives": []
+  },
+  {
+    "id": "q29",
+    "split": "holdout",
+    "question": "What part of Alice’s clothing knocked over the jury-box?",
+    "expected_answer": "The edge of her skirt.",
+    "gold_source_id": "alice",
+    "gold_page": 76,
+    "evidence_quote": "she tipped over the jury-box with the edge of her skirt",
+    "filter": {},
+    "alternatives": []
+  },
+  {
+    "id": "q30",
+    "split": "holdout",
+    "question": "Who told Alice to wake up at the end?",
+    "expected_answer": "Her sister.",
+    "gold_source_id": "alice",
+    "gold_page": 81,
+    "evidence_quote": "“Wake up, Alice dear!” said her sister;",
+    "filter": {},
+    "alternatives": []
+  }
+]

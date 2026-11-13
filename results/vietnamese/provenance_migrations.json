@@ -1,0 +1,9 @@
+{
+  "utc": "2026-11-13T10:45:58.092275+00:00",
+  "reason": "Packaging metadata correction after PDF was copied into repo: portable local_path, required license_or_permission, official source URL. No corpus text, PDF bytes, benchmark, trace or metric changed.",
+  "snapshots": {
+    "data/vietnamese/manifest.json": "results/vietnamese/input_snapshots/manifest.json"
+  },
+  "historical_sha256": "d639625222a8fcdba63b08f0cb8d60e617a28ad7cf637db6f204660aaf61750b",
+  "packaged_sha256": "c847e5da45f80a7add4a4dcd05cc5097df38c438ffa4514783eb3fffabe5fa81"
+}

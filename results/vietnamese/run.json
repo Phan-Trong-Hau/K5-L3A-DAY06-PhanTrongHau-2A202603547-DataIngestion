@@ -1,0 +1,64 @@
+{
+  "utc": "2026-11-13T09:59:18.986365+00:00",
+  "protocol": {
+    "status": "new document external source test; frozen before first retrieval; no tuning or selection on this dataset",
+    "corpus": "data/vietnamese/pages.json",
+    "questions": "benchmark/vietnamese_questions.json",
+    "language": "vi",
+    "embedding": "BAAI/bge-small-en-v1.5 unchanged from English baseline",
+    "reranker": "Xenova/ms-marco-MiniLM-L-6-v2 unchanged",
+    "strategies": {
+      "A": "fixed 500 overlap50",
+      "B": "paragraph max1000",
+      "C": "B plus input chapter filter",
+      "D": "B plus dense20 BM25_20 RRF60 rerank20 top3 and input chapter filter"
+    },
+    "segmentation": "physical pages, additionally split chapter transitions for trustworthy filters; chunk offsets remain relative to original normalized OCR page",
+    "collection_path": ".qdrant_vi",
+    "top_k": 3,
+    "metric": "exact cosine for dense; unchanged strict single-chunk source/page/full-quote Hit metrics",
+    "test_count": 20,
+    "dev_count": 0,
+    "filter_questions": [
+      "vi01",
+      "vi06",
+      "vi18",
+      "vi19"
+    ],
+    "caveats": [
+      "New document and language; one scanned source only, authored AI labels pending student review.",
+      "English embedding/reranker, unchanged English lexical stopwords; intentional out-of-domain test, not optimized Vietnamese retrieval.",
+      "OCR errors can affect ranking; benchmark is evaluated against frozen OCR text, not a perfect human transcription.",
+      "All 20 external-test queries are frozen; no parameter search after results."
+    ]
+  },
+  "input_hashes": {
+    "data/vietnamese/pages.json": "706170a1d56f0f17e407a4c44027fe7341d8ca6a7ca2f8e1233b310ca3509093",
+    "data/vietnamese/manifest.json": "d639625222a8fcdba63b08f0cb8d60e617a28ad7cf637db6f204660aaf61750b",
+    "benchmark/vietnamese_questions.json": "92a996a1c0f5750d8bcbb5f1cb25c0201f4585a1a4982c8701acdb881df85c0b",
+    "benchmark/vietnamese_protocol.json": "8187bb68295f9ca221bf5341e898297330498e80a6f85f25f627613ce1d1f996",
+    "benchmark/extension_protocol.json": "866de64ba4d571fe6a9bd6eb4c478ae1ff63f575902054b49f3194e4c7ff7261",
+    "results/traces.jsonl": "597d7c1fe07cc6db3203303eca324716b6732485d12fb45c175a7569144dc698",
+    "results/metrics.json": "35cd0229f0d569d3ff69d6775adf5d6e3d4e60cca77debabcacd23cc1091c59c",
+    "results/extension/metrics.json": "fc4f74a6c6d2edd7183ca5d3e46cc864b50066defaf75d2649fe5bad10072efb",
+    "results/extension/traces.jsonl": "40a98b1dc16c1eb162ce0beff52dfb158ce93d2914a8b96429652c55ba9d1b23"
+  },
+  "dimensions": 384,
+  "model": "BAAI/bge-small-en-v1.5",
+  "reranker": "Xenova/ms-marco-MiniLM-L-6-v2",
+  "total_seconds": 38.89985940299812,
+  "api_cost_usd": 0,
+  "mean_retrieval_seconds": {
+    "A": 0.0006865498995466624,
+    "B": 0.0005608528001175728,
+    "C": 0.0006447483998272219,
+    "D": 0.9507906925997304
+  },
+  "versions": {
+    "fastembed": "0.9.1",
+    "qdrant-client": "1.20.0",
+    "onnxruntime": "1.31.1",
+    "pypdf": "7.0.1"
+  },
+  "note": "OCR and source chapter boundaries frozen before retrieval. No manual grounding/coherence scores assigned. Original Alice artifacts untouched."
+}
